@@ -7,6 +7,7 @@
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage{amsmath, amssymb, graphicx}
+\usepackage{subfig}
 \usepackage{xspace}
 \usepackage{braket}
 \usepackage{color}
@@ -106,21 +107,61 @@ The High Luminosity LHC (HL-LHC) upgrade will offer unprecedented energies to ex
 
 \begin{section}{The Topolino Design}
 
-The barrel and endcap layers of the MTD have rotational symmetries -- they are round -- while the sensors are rectangular. For the barrel, the solution is fairly simple: long trays of sensors may be laid along the axis of the barrel, mainting its cylindrical symmetry. However, the endcaps are annuli, so correctly fitting the rectangular sensors to the space allotted becomes a complicated exercise in geometric optimization, while including space for all of the required circuitry, wiring, and cooling systems imposes complicated physical constraints. One design was arrived at, named ``Topolino'' (Mickey Mouse in Italian) by its inventor, where the endcap is divided into four ninety-degree wedges. The front of each wedge is tiled with parallel strips of sensors that continue up until the the edge of the endcap. The back of the same wedge is similarly covered, but the sensors are horizontally offset to cover the gaps left by the readout electronics on the front. Each wedge is covered in this way, then placed such that the sensors in each is perpendicular to its neighboring wedges.
+The barrel and endcap layers of the MTD have rotational symmetries -- they are round -- while the sensors are rectangular. For the barrel, the solution is fairly simple: long trays of sensors may be laid along the axis of the barrel, mainting its cylindrical symmetry. However, the endcaps are annuli, so correctly fitting the rectangular sensors to the space allotted becomes a complicated exercise in geometric optimization, while including space for all of the required circuitry, wiring, and cooling systems imposes complicated physical constraints. One design was arrived at, named ``Topolino'' (Mickey Mouse in Italian) by its inventor, where the endcap is divided into four ninety-degree wedges. The front of each wedge is tiled with parallel strips of sensors that continue up until the the edge of the endcap. The back of the same wedge is similarly covered, but the sensors are horizontally offset to cover the gaps left by the readout electronics on the front. Each wedge is covered in this way, then placed such that the sensors in each is perpendicular to its neighboring wedges. See Figure \ref{fig:topolino} for further visualization of the proposed design.
 
 \end{section}
 
 \begin{section}{Rendering the Detector}
 
-Detector physics simulation begins with a simulation of the detector, but for answers to questions about the MTD's design and performance, verbose considerations of minute physical interactions are, at the moment, unnecessary. Therefore, though more complex tools offer more accurate physics, a simple rendering of each sensor's position is space is sufficient. However, the simulation must also be configurable, so assembling the it by hand, like most 3D-modeling software requires, was neither an entertaining, nor efficient solution. Instead, I selected OpenSCAD, a C-like programming language that allows for simple, modular construction of three-dimensional models.
+Detector physics simulation begins with a simulation of the detector, but for answers to questions about the MTD's design and performance, verbose considerations of minute physical interactions are, at the moment, unnecessary. Therefore, though more complex tools offer more accurate physics, a simple rendering of each sensor's position is space is sufficient. However, the simulation must also be configurable, so assembling the it by hand, like most 3D-modeling software requires, was neither an entertaining, nor efficient solution. Instead, OpenSCAD, a C-like programming language that allows for simple, modular construction of three-dimensional models, was selected.
 
 To algorithmically implement the Topolino design, fundamental rules that govern the layout had to be established. First, neither the sensors, nor the space allotted for their circuitry, could be allowed to hang over the perimeter of the endcap. Second, sensors are most easily assembled and placed as modules, so the detector must be tiled by \textit{groups} of sensors. Finally, the service modules -- the ``circuitry'' for which space has already been allotted -- are designed to service sensors on both sides, so sensors should (generally) be placed as such, resulting in a neat grid. With these rules in mind, an algorithm parses the x-axis in increments equal to the width of a sensor module, then places sensors by their lower, left-hand (closest to origin) corners, so long as their placement does not violate any of the previously stated rules. One wedge is tiled in this way with the sensors on its reverse side simply placed starting from a given displacement from the origin such that the holes left by the spacing for readout electronics. The rest of the endcap is covered by simply taking this wedge, then placing orthogonally-rotated copies until the entire surface is covered.
+
+\begin{figure}[htb]
+\label{fig:topolino}
+\begin{center}
+\subfloat[Rendered with no mounting disk to show coverage of electronics gaps.]      {
+\includegraphics[width=.5\linewidth]{Dissertation/fig/topolino-nodisk.png}
+}
+\\
+\subfloat[Front of one full disk.]      {
+\includegraphics[width=.25\linewidth]{Dissertation/fig/topolino-front.png}
+}\quad
+\subfloat[Back of one full disk.]      {
+\includegraphics[width=.25\linewidth]{Dissertation/fig/topolino-back.png}
+}
+\end{center}
+\caption{The ``topolino'' design.}
+\end{figure}
 
 \end{section}
 
 \begin{section}{Simulating Performance}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et neque massa. Fusce sit amet orci libero. Morbi venenatis quam ante, in vehicula diam. Cras in dui sem, et fermentum ligula. Sed sed tellus ut purus semper pharetra euismod nec tellus. Nullam tortor justo, tincidunt sed varius vel, rhoncus id ipsum. Sed ipsum sem, bibendum id posuere sit amet, dignissim vel odio. Integer pretium mattis metus eu porta. Sed luctus, eros eu feugiat euismod, nulla augue fringilla nisi, sed gravida sem orci ac urna.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et neque massa. Fusce sit amet orci libero. Morbi venenatis quam ante, in vehicula diam. Cras in dui sem, et fermentum ligula. Sed sed tellus ut purus semper pharetra euismod nec tellus. Nullam tortor justo, tincidunt sed varius vel, rhoncus id ipsum. Sed ipsum sem, bibendum id posuere sit amet, dignissim vel odio. Integer pretium mattis metus eu porta. Sed luctus, eros eu feugiat euismod, nulla augue fringilla nisi, sed gravida sem orci ac urna.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et neque massa. Fusce sit amet orci libero. Morbi venenatis quam ante, in vehicula diam. Cras in dui sem, et fermentum ligula. Sed sed tellus ut purus semper pharetra euismod nec tellus. Nullam tortor justo, tincidunt sed varius vel, rhoncus id ipsum. Sed ipsum sem, bibendum id posuere sit amet, dignissim vel odio. Integer pretium mattis metus eu porta. Sed luctus, eros eu feugiat euismod, nulla augue fringilla nisi, sed gravida sem orci ac urna.
+
+\begin{figure}[htb]
+\label{fig:chronoplots}
+\begin{center}
+\subfloat[Subcaption a]      {
+\includegraphics[width=.25\linewidth]{Dissertation/fig/DiskEtaEff01-1190mm.png}
+}\quad
+\subfloat[Subcaption b]      {
+\includegraphics[width=.25\linewidth]{Dissertation/fig/DiskEtaPtEff01-1190mm.png}
+}\\
+\subfloat[Subcaption c]      {
+\includegraphics[width=.25\linewidth]{Dissertation/fig/LayerHitEff01-1190mm.png}
+}\quad
+\subfloat[Subcaption d]      {
+\includegraphics[width=.25\linewidth]{Dissertation/fig/LayerHits01-1190mm.png}
+}
+\end{center}
+\caption{Caption of Figure}
+\end{figure}
 
 \end{section}
 
@@ -130,13 +171,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et neque massa. 
 \begin{section}{Motivation}
 
 \cite{Maldacena:1997re,joesbook}. Figure \ref{fig:label}.
-
-\begin{figure}[t]
-\centerline{\includegraphics[width=.35\textwidth]{fig/testfig1.pdf}
-\hspace{1cm}\includegraphics[width=.45\textwidth]{fig/testfig2.pdf}}
-\caption{Figure Captions.}
-\label{fig:label}
-\end{figure}
 
 \end{section}
 
