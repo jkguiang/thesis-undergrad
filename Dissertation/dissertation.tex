@@ -90,7 +90,9 @@
 
 %=== Introduction ============================================
 \chapter{Introduction}
+
 Over the last century, the Standard Model (SM) has been shown to be the most accurate description of the fundamental construction and operation of the universe, but it is still incomplete, giving rise to many theories including Supersymmetry (SUSY), a popular extension of the Standard Model. It predicts a partner particle to every SM particle, which would resolve some particularly bothersome issues with the Standard Model like fixing the mass of the Higgs Boson, the identity of Dark Matter, and many others. Assuming SUSY is real, supersymmetric particles are expected to appear in high-energy collisions at the Large Hadron Particle Collider (LHC). However, direct evidence for SUSY, or for any other competing theory, has yet to be discovered, thus motivating the continual development of the LHC and of the field of High Energy physics as a whole. Progress at the LHC is due to two fundamentally connected and absolutely essential aspects of High Energy physics: detector design and data analysis - the detector provides the data, but the analysis makes it useful. As such, developments on both sides of the process offer the potential for finding new physics.
+
 \begin{section}{Permissions and Attributions}
 \begin{enumerate}
 
@@ -101,220 +103,51 @@ Over the last century, the Standard Model (SM) has been shown to be the most acc
 
 %=== Chapter 2  ============================================
 \chapter{MTD Simulation}
-%---  Section -------------------------
-\begin{section}{Motivation}
-
-The High Luminosity LHC (HL-LHC) upgrade will offer unprecedented energies to explore for new physics, but it brings with it new complications that must be addressed by upgraded or additional detector hardware. Foremost among the new challenges posed by the HL-LHC is that higher luminosity means many more particles, which provides a far more complex picture to reconstruct for analysis. One such complexity is the increase in collision points, which is a key component of both offline and online reconstruction. With more particles colliding, collision points start to ``pile up'' on top of each other in space. Consequently, when reconstructing collisions into discrete ``events,'' one for each proton-proton collision, the reconstruction algorithm is unable to discern between one collision and many others that occurred in the same point in space. However, we know that these collisions occur at different \textit{times}, so adding timing information would certainly help reduce pileup. To this end, it has been proposed that a layer of silicon-based sensors, with sufficient timing resolutions, be placed around the parimeter -- surrounding the barrel and covering the endcap -- of the CMS detector, but the design and approval of such an upgrade is no simple task. From its conceptual inception to the finalization of its technical design, questions continually arise, so clear, cogent answers are constantly required. Furthermore, since the detector has yet to be built, computer simulations are necessary to address important concerns regarding the design and projected performance of the MTD.
-
-\end{section}
-
-\begin{section}{The Topolino Design}
-
-The barrel and endcap layers (BTL and ETL respectively) of the MTD have rotational symmetries -- they are round -- while the sensors are rectangular. Thus, correctly fitting the rectangular sensors to the circular space allotted on the endcaps becomes a complicated exercise in geometric optimization, while including space for all of the required circuitry, wiring, and cooling systems imposes complicated physical constraints. However, for the BTL, the design is fairly simple: long trays of sensors may be laid along the axis of the barrel, maintaining its cylindrical symmetry. Now, for the ETL, one design was arrived at, named ``Topolino'' (Mickey Mouse in Italian) by its inventor, where the ETL is divided into four ninety-degree wedges. The front of each wedge is tiled with parallel strips of sensors that continue up until the the edge of the endcap. The back of the same wedge is similarly covered, but the sensors are horizontally offset to cover the gaps left by the readout electronics on the front. Each wedge is covered in this way, then placed such that the sensors in each is perpendicular to its neighboring wedges. See Figure \ref{fig:topolino} for a detailed visualization of the proposed design.
-
-\end{section}
-
-\begin{section}{Rendering the Detector}
-
-Detector physics simulation begins with a simulation of the detector, but for answers to questions about the MTD's design and performance, verbose considerations of minute physical interactions are, at the moment, unnecessary. Therefore, though more complex tools offer more accurate physics, a simple rendering of each sensor's position is space is sufficient. However, the simulation must also be configurable, so assembling the it by hand, like most 3D-modeling software requires, was neither an entertaining, nor efficient solution. Instead, OpenSCAD, a C-like programming language that allows for simple, modular construction of three-dimensional models, was selected.
-
-To algorithmically implement the Topolino design, fundamental rules that govern the layout had to be established. First, neither the sensors, nor the space allotted for their circuitry, could be allowed to hang over the perimeter of the endcap. Second, sensors are most easily assembled and placed as modules, so the detector must be tiled by \textit{groups} of sensors. Finally, the service modules -- the ``circuitry'' for which space has already been allotted -- are designed to service sensors on both sides, so sensors should (generally) be placed as such, resulting in a neat grid. With these rules in mind, an algorithm parses the x-axis in increments equal to the width of a sensor module, then places sensors by their lower, left-hand (closest to origin) corners, so long as their placement does not violate any of the previously stated rules. One wedge is tiled in this way with the sensors on its reverse side simply placed starting from a given displacement from the origin such that the holes left by the spacing for readout electronics. The rest of the endcap is covered by simply taking this wedge, then placing orthogonally-rotated copies until the entire surface is covered.
-
-\begin{figure}[htb]
-\label{fig:topolino}
-\begin{center}
-\subfloat[Rendered with no mounting disk to show coverage of electronics gaps.]      {
-\includegraphics[width=.5\linewidth]{Dissertation/fig/topolino-nodisk.png}
-}
-\\
-\subfloat[Front of one full disk.]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/topolino-front.png}
-}\quad
-\subfloat[Back of one full disk.]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/topolino-back.png}
-}
-\end{center}
-\caption{The ``topolino'' design.}
-\end{figure}
-
-\end{section}
-
-\begin{section}{Simulating Performance}
-
-The three-dimensional model of the MTD can be exported as a Standard Tessellation Language (STL) file. During the export process, each independent object -- say, a single sensor which is represented as a thin rectangular prism -- is broken down into each of its constituent faces. Then, undergoes the tessellation process, wherein the face considered is broken into some optimal number of constituent triangles (triangles typically are used for simplicity of later calculations). The \textit{vertices} of each of these triangles, hereafter referred to as \textit{polygons}, are then written to the STL file, in a clockwise order relative to the origin. It is important to note that this guarantees that the \textit{facet normal} vector -- that is, the vector is orthogonal to the surface of the polygon with a magnitude equal to the are of the polygon -- always points outwards with respect to the origin.
-
-Now, before the simulation is generally discussed, the algorithm by which an intersection between a point and a polygon is determined should first be outlined, since it is the core of the simulation but is otherwise only tangentially important to the overall process. Consider a triangle in three-space, namely a set of three vectors $\vec{v}_1, \vec{v}_2, \vec{v}_3$ with facet normal $\hat{n}$, normalized such that $|\hat{n}| = 1$, pointing outwards relative to the origin. Then, suppose there exists a point $\vec{a}$ somewhere in three-space. First, the coordinate system must be rotated into the plane of the polygon (in order to account for both the azimuthal symmetry of the BTL and radial symmetry of the ETL). One basis vector, arbitrarily chosen to be $\hat{e}_3'$, is already given by the facet normal vector. Another, now chosen to be $\hat{e}_{1}'$, is given by the original $\hat{e}_3$ vector (this is $\hat{z}$ is the CMS coordinate system; see Appendix \ref{appendix:a} for more information). With two basis vectors determined, the third is simply given by the cross product $\hat{e}_3'\times\hat{e}_1'$, assuming they are already normalized (again Figure \ref{fig:setup}). From the new set of basis vectors, namely
-
-\begin{equation}
-    \hat{e}_i = \begin{pmatrix} x_i \\ y_i \\ z_i \end{pmatrix}
-\end{equation}
-
-\noindent a matrix can be constructed to translate any arbitrary vector into the primed coordinate system:
-
-\begin{equation}
-    R = \begin{pmatrix} 
-        x_1 & y_1 & z_1 \\
-        x_2 & y_2 & z_2 \\
-        x_3 & y_3 & z_3
-    \end{pmatrix}
-\end{equation}
-
-\noindent Now, the point $\vec{a}$ and vertices $\vec{v}_i$ are translated into the primed coordinate system such that $R\vec{a} = \vec{a}'$ and $R\vec{v}_i = \vec{v}_{i}'$ where the $\hat{e}_3'$ coordinates of $\vec{a}'$ and $\vec{v}_i'$ are set to zero, ensuring that all points considered are in the plane parallel to the polygon. Then, the vector from the point $\vec{a}'$ to the vertex $\vec{v}_{i}'$ is defined $\vec{d}_{i}' = \vec{v}_{i}'-\vec{a}'$. Finally, the following cross products are defined:
-
-\begin{equation}
-    \vec{C}_{i}' = \epsilon_{ijk}(\vec{d}_{j}'\times\vec{d}_{k}')
-\end{equation}
-
-\noindent In words, the vectors $C_{i}'$ are the cross products between adjacent vectors $\vec{d}_{j}'$, $\vec{d}_{k}'$ taken in cyclical permutations, as dictated by the Levi-Cevita symbol $\epsilon_{ijk}$. More importantly, however, each vector $C_{i}'$ must be \textit{parallel} to the facet normal vector, which is $\hat{e}_{3}'$ in the primed coordinate system, if it lies \textit{inside} of the polygon. This is because the angles between each vector $\vec{d}_{i}'$ must add up to 180 degrees inside the polygon or 360 degrees outside by geometric constraint, so the angle between two vectors $\vec{d}_{i}'$, $\vec{d}_{j}'$ has an \textit{upper limit} of 180 degrees inside of the triangle and 360 degrees outside. Now, the cross product between these vectors will point one way (here, the positive $\hat{e}_3'$ direction) if the angle between them is less than 180 degrees or exactly anti-parallel (the $-\hat{e}_3'$ direction) otherwise, so if all $C_{i}'$ are \textit{greater than} zero, $\vec{a}$ must be inside of the polygon, otherwise, it can immediately determined that $\vec{a}$ is outside. Put simply, point $\vec{a}$ intersects the polygon given by $\vec{v}_1, \vec{v}_2, \vec{v}_3$ and facet normal $\hat{n}$ if and only if $\vec{C}_{i}' > 0$ where $i\in[1,2,3]$.
-
-\begin{figure}[htb]
-\label{fig:setup}
-\begin{center}
-
-\subfloat[Original]      {
-\input{Dissertation/tex/vec-diagram1.tex}
-}\quad
-\subfloat[Primed]      {
-\input{Dissertation/tex/vec-diagram2.tex}
-}
-
-\end{center}
-\caption{Diagram of coordinate transform.}
-\end{figure}
-
-\begin{figure}[htb]
-\label{fig:vectors}
-\begin{center}
-
-\subfloat[Inside]      {
-\input{Dissertation/tex/vec-diagram3.tex}
-}\quad
-\subfloat[Outside]      {
-\input{Dissertation/tex/vec-diagram4.tex}
-}
-
-\end{center}
-\caption{Vectors from hit position to vertices.}
-\end{figure}
-
-The STL representation of the MTD and a text file containing the kinematics of many thousands of simulated particle trajectories is now input to a Python program that operates as follows: for each trajectory in the trajectory file, parse over every polygon in the STL file and check if the trajectory intersects the polygon using the algorithm described previously; if true, save some kinematics of the trajectory including the hit position; else, continue. This is, in essence, how many ``ray tracing'' algorithms\cite{raytrace} function, which calculate effects like lighting for computer graphics. Like ray tracing, this is a slow process, which is why graphics seen in movies are pre-rendered and far more detailed and realistic than graphics computed in real time, though recent developments are making real-time, brute-force ray tracing more feasible. However, such technology was neither present nor necessary for this simulation. Instead, the Condor\cite{condor} system on the Tier 2 computing center at UC San Diego was used to run the algorithm over approximately 250,000 trajectories. As a result, plots accurate up to the millimeter scale may be produced to study the efficiency of the entire MTD may be simulated for a dynamic range of geometries. An example of the simulation's output is shown in Figure \ref{fig:chronoplots} for the ETL with a 1190mm outer radius following the Topolino design.
-
-\begin{figure}[htb]
-\label{fig:chronoplots}
-\begin{center}
-\subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/DiskEtaEff01-1190mm.png}
-}\quad
-\subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/DiskEtaPtEff01-1190mm.png}
-}\\
-\subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/LayerHitEff01-1190mm.png}
-}\quad
-\subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/LayerHits01-1190mm.png}
-}
-\end{center}
-\caption{Efficiency plots produced using simulation data.}
-\end{figure}
-
-\end{section}
+\input{Dissertation/tex/mtd-sim.tex}
 
 %=== Chapter 3  ============================================
 \chapter{Search for Anomolous Higgs to Vector-Meson Couplings}
-%---  Introduction -------------------------
-\begin{section}{Motivation}
+\input{Dissertation/tex/higgs.tex}
 
-\cite{Maldacena:1997re,joesbook}. Figure \ref{fig:label}.
-
-\end{section}
-
-\begin{section}{Analysis Methods}
-\begin{subsection}{Data}
-The analysis begins with data based on a sample of proton-proton collisions collected by the Compact Muon Solenoid (CMS) detector in the LHC. ``Interesting'' events are selected by the first level of the CMS trigger system which uses information from the detector's calorimeters and muon detectors to select events for analysis in a fixed time interval of less than 4 $\mu s$. These events are then further processed by a high-level trigger processor farm, which decreases the event rate from around 100 kHz to less than 1 kHz, before the data is stored. Finally, the particle-flow algorithm reconstructs and identifies all particles from the events selected by the CMS trigger system. With the data properly processed and promptly reconstructed ``online,'' further analysis can be carried out ``offline.''
-\end{subsection}
-\begin{subsection}{Monte Carlo}
-The analysis begins with data based on a sample of proton-proton collisions collected by the Compact Muon Solenoid (CMS) detector in the LHC. ``Interesting'' events are selected by the first level of the CMS trigger system which uses information from the detector's calorimeters and muon detectors to select events for analysis in a fixed time interval of less than 4 $\mu s$. These events are then further processed by a high-level trigger processor farm, which decreases the event rate from around 100 kHz to less than 1 kHz, before the data is stored. Finally, the particle-flow algorithm reconstructs and identifies all particles from the events selected by the CMS trigger system. With the data properly processed and promptly reconstructed ``online,'' further analysis can be carried out ``offline.''
-\end{subsection}
-\end{section}
-
-\begin{section}{Results}
-
-\end{section}
-
-
-
-%=== Appendix ============================================
 \appendix
 
 \dsp
 
 \chapter{The Compact Muon Solenoid}{\label{appendix:a}}
-\begin{section}{CMS Coordinate System}
+\begin{section}{The Detector}
 
-In the CMS Coordinate system, the z-axis is aligned along the beampipe, therefore running parallel to the barrel and perpendicular to the endcap.
+The Compact Muon Solenoid (CMS) is a general purpose detector at the LHC, meaning it probes for the existence of a variety of new physics. The detector's namesake is a ``compact'' solenoid, the largest superconducting magnet ever built (with a length of 15m and diameter of 7m\cite{CMS:1994hea}), that generates a 4T magnetic field - strong enough to pull many high-energy, charged particles produced in a proton-proton collision towards CMS's detector layers. Particles first encounter the tracker, which is composed of several layers of silicon pixels and strip detectors. Essentially, a through-going particle leaves a cascading charge deposit that can be measured as an electrical signal. This results in an accurate measurement of the particle's position as it passes through various sections of the tracker, which can then be reconstructed to give the particle's entire trajectory. Track information provides fundamental insights like the charge and momentum of a particle, for instance, which can be inferred from the curvature of the particle's trajectory. Having passed through the tracker, particles then encounter the calorimeters, which will measure the final energies of emergent particles when possible. Energies of particles that interact by the electromagnetic force, electrons and photons, are measured by the Electromagnetic Calorimeter (ECAL) while those that interact by the strong force, hadrons, are measured by the Hadronic Calorimeter (HCAL). Finally, particles that escape the ECAL and HCAL -- now only muons and weakly interacting particles -- encounter the muon layer, where muons are tracked further, before leaving the bounds of CMS. The presence of neutrinos, which mostly pass through the detector undisturbed, and possibly yet-undiscovered particles can only be inferred. Conservation of momentum is key here: invisible particles will show up as missing energy in comparing the sum of the measured particle momenta to the overall energy of the collision.
 
 \begin{figure}[htb]
-\label{fig:cms-coords}
 \begin{center}
-\tdplotsetmaincoords{75}{50} % to reset previous setting
-\begin{tikzpicture}[scale=2.7,tdplot_main_coords,rotate around x=90]
- 
-  % variables
-  \def\rvec{1.2}
-  \def\thetavec{40}
-  \def\phivec{70}
-  \def\R{1.1}
-  \def\w{0.3}
- 
-  % axes
-  \coordinate (O) at (0,0,0);
-  \draw[thick,->] (0,0,0) -- (1,0,0) node[below left]{$x$};
-  \draw[thick,->] (0,0,0) -- (0,1,0) node[below right]{$y$};
-  \draw[thick,->] (0,0,0) -- (0,0,1) node[below right]{$z$};
-  \tdplotsetcoord{P}{\rvec}{\thetavec}{\phivec}
- 
-  % vectors
-  \draw[->,red] (O) -- (P) node[above left] {$P$};
-  \draw[dashed,red] (O)  -- (Pxy);
-  \draw[dashed,red] (P)  -- (Pxy);
-  \draw[dashed,red] (Py) -- (Pxy);
- 
-  % circle - LHC
-  \tdplotdrawarc[thick,rotate around x=90,black!70!blue]{(\R,0,0)}{\R}{0}{360}{}{}
- 
-  % compass - the line between CMS and ATLAS has a ~12° declination (http://googlecompass.com)
-  \begin{scope}[shift={(1.1*\R,0,1.65*\R)},rotate around y=12]
-    \draw[<->,black!50] (-\w,0,0) -- (\w,0,0);
-    \draw[<->,black!50] (0,0,-\w) -- (0,0,\w);
-    \node[above left,black!50,scale=0.6] at (-\w,0,0) {N};
-  \end{scope}
- 
-  % nodes
-  \node[left,align=center] at (0,0,1.1) {Jura};
-  \node[right] at (\R,0,0) {LHC};
-  \fill[radius=0.8pt,black!20!red]
-    (O) circle node[left=4pt,below=2pt] {CMS};
-  \draw[thick] (0.02,0,0) -- (0.5,0,0); % partially overdraw x-axis and CMS point
-  \fill[radius=0.8pt,black!20!blue]
-    (2*\R,0,0) circle
-    node[right=4pt,below=2pt,scale=0.9] {ATLAS};
-  \fill[radius=0.8pt,black!10!orange]
-    ({\R*sqrt(2)/2+\R},0,{ \R*sqrt(2)/2}) circle % 45 degrees from ATLAS
-    node[left=2pt,below=2pt,scale=0.8] {ALICE};
-  \fill[radius=0.8pt,black!60!green]
-    ({\R*sqrt(2)/2+\R},0,{-\R*sqrt(2)/2}) circle % 45 degrees from ATLAS
-    node[below=2pt,right=2pt,scale=0.8] {LHCb};
- 
-  % arcs
-  \tdplotdrawarc[->]{(O)}{0.2}{0}{\phivec}
-    {above=2pt,right=-1pt,anchor=mid west}{$\phi$}
-  \tdplotdrawarc[->,rotate around z=\phivec-90,rotate around y=-90]{(0,0,0)}{0.5}{0}{\thetavec}
-    {anchor=mid east}{$\eta$}
- 
-\end{tikzpicture}
+\subfloat[Sectional visualization of CMS.]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/cms-xsec.png}
+}\quad
+\subfloat[Cross section of detector showing various particle behavior.]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/cms-slice.png}
+}
+\end{center}
+\caption{Visualizations of the design and function of CMS.}
+\label{fig:cms-xsec}
+\end{figure}
+
+\end{section}
+\begin{section}{CMS Coordinate System}
+
+In the CMS Coordinate system, the $z$-axis is aligned along the beampipe, therefore running parallel to the barrel and perpendicular to the endcap of the detector. The $x$-axis points radially towards the center of the LHC, and the y-axis points orthogonal to $x$ and $z$. The azimuthal angle $\phi$ is defined about the $z$-axis, as in cylindrical coordinates, and the pseudo-rapidity $\eta$ is defined as
+
+\begin{equation}
+    \eta \equiv -\ln{\bigg[ \tan{\bigg( \frac{\theta}{2} \bigg)} \bigg]}
+\end{equation}
+
+\noindent where $\theta$ is the angle between the particle three-momentum and positive $z$-axis. See Figure \ref{fig:cms-coords} for a visualization of this coordinate system.
+
+\begin{figure}[htb]
+\begin{center}
+\input{Dissertation/tex/cms-diagram.tex}
 \end{center}
 \caption{Diagram of CMS coordinate system.}
+\label{fig:cms-coords}
 \end{figure}
 
 \end{section}

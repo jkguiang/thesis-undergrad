@@ -2,10 +2,6 @@
 \begin{tikzpicture}[scale=3,tdplot_main_coords]
  
   % variables
-  % theta, phi for a
-%   \def\rvec{.8}
-%   \def\thetavec{30}
-%   \def\phivec{345}
   % theta, phi for v1
   \def\rvecone{1.0}
   \def\thetavecone{90}
@@ -25,6 +21,7 @@
   \draw[thick,->] (0,0,0) -- (0,1,0) node[anchor=north west]{$\hat{e}_2'$};
   \draw[thick,->] (0,0,0) -- (0,0,1) node[anchor=south]{$\hat{e}_3'$};
 
+  \draw plot [mark=*, mark size=0.5] coordinates{(0.2,-0.3,0)};
   % a
   \draw[-stealth,black] (0,0,0) -- (0.2,-0.3,0) node[above right]{$\vec{a}'$};
   % d1
