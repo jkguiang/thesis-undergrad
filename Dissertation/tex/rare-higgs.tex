@@ -6,7 +6,7 @@ I begin with a brief discussion of the motivation behind looking for rare Higgs 
 
 \begin{section}{Motivation}
 
-The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays (see Fig. \ref{fig:whiggs}) are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
+The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays (see Fig. \ref{fig:whiggs}) are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at current, human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
 
 \begin{figure}[htb]
 \begin{center}
@@ -65,13 +65,13 @@ Based on the following basic study, we found that a Boosted Decision Tree (BDT) 
 \end{equation}
 \noindent where $s$ and $b$ are the number of signal and background events for a given threshold value. The optimal BDT working point is then given by the maximum $\sigma$-value. Next, we defined a general cut-based approach by the following cuts:
 \begin{itemize}
-    \item $1.0 < m_{\phi} < 1.04$
+    \item $1.0 < m_{\phi} < 1.04\textnormal{ GeV}$
     \item $\Delta R(K^{+}, K^{-}) < 0.015$
     \item $p_{T}(\phi) > 25\textnormal{ GeV}$
     \item $p_{T}(\gamma) > 40\textnormal{ GeV}$
     \item $I_{rel}(\phi) < 0.01$
 \end{itemize}
-\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}.
+\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}. Note that the terms BDT ``score," ``threshold," and ``discriminant" will be used interchangeably throughout the remainder of this paper with the understanding that they are the same quantity $D \in [0,1]$.
 
 \begin{figure}[htb]
 \begin{center}
@@ -82,6 +82,15 @@ Based on the following basic study, we found that a Boosted Decision Tree (BDT) 
 \end{figure}
 \end{subsection}
 \begin{subsection}{Training}
+Prior to training, we made the following cuts that prevent over-training the BDT by essentially pre-training it to cut on each respective variable:
+
+\begin{itemize}
+    \item $1.0 < m_{\phi} < 1.04\textnormal{ GeV}$
+    \item $80 < m_{Z} < 95\textnormal{ GeV}$
+\end{itemize}
+
+\noindent where each was chosen because of the narrow width of their distributions. Then, because BDT's are vulnerable to low statistics, we also added several extraneous, orthogonal datasets that were unnecessary for the greater analysis, but served as useful, accurate background shapes. Ultimately, we gave BDT 40563 training and 13522 testing events.
+
 We began with the XGBoost python package, a well-known implementation of gradient-boosted decision trees. Twenty-two features were selected, from those saved during the baseline selection step, based on their merit as variables that are reasonably uncorrelated to the signal region (reconstructed Higgs boson mass). The unweighted distributions for all input features are shown in Fig. \ref{fig:bdt-vars}, but they are also listed below divided into categories for brevity and later reference:
 \begin{enumerate}[(i.)]
     \item Missing Transverse Energy ($\slashed{E}_{T}$):
@@ -107,7 +116,7 @@ We began with the XGBoost python package, a well-known implementation of gradien
     \end{itemize}
 \end{enumerate}
 
-\noindent There are some important clarifications to make here. First, we scaled all $p_{T}$ quantities that are correlated to the Higgs and input into the BDT by the Higgs mass. Second, $\varphi$ refers to the azimuthal angle (see Fig. \ref{fig:cms-coords}) which is not to be confused with the $\phi$-meson. Finally, we calculated the quantities listed under (.iv) using MELA\cite{cite-mela} (all angles used are illustrated in Fig. \ref{fig:magic-angles}).
+\noindent Now, there are some important clarifications to make here. First, we scaled all $p_{T}$ quantities that are correlated to the Higgs and input into the BDT by the Higgs mass. Second, $\varphi$ refers to the azimuthal angle (see Fig. \ref{fig:cms-coords}) which is not to be confused with the $\phi$-meson. Finally, we calculated the quantities listed under (iv.) using MELA\cite{cite-mela} (all angles used are illustrated in Fig. \ref{fig:magic-angles}).
 
 \begin{figure}[htb]
 \begin{center}
@@ -124,9 +133,26 @@ We began with the XGBoost python package, a well-known implementation of gradien
 \caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied, so they do not completely represent what the BDT saw, however they do provide some insight into the motivation behind the BDT's variable rankings.}
 \label{fig:bdt-training}
 \end{figure}
+
+With these features properly defined, we ran the BDT for 200 training rounds with the following model hyperparameters selected to maximize BDT efficiency without overtraining (See Fig. \ref{fig:bdt-knobs} for hyperameter definitions):
+\begin{itemize}
+    \item \verb|objective| = 'binary:logistic'
+    \item \verb|eta| = 0.1
+    \item \verb|max_depth| = 3
+    \item \verb|verbosity| = 1
+    \item \verb|nthread| = 12
+    \item \verb|eval_metric| = "auc"
+    \item \verb|subsample| = 0.6
+    \item \verb|alpha| = 8.0
+    \item \verb|gamma| = 2.0
+    \item \verb|lambda| = 1.0
+    \item \verb|min_child_weight| = 1.0
+    \item \verb|colsample_bytree| = 1.0
+\end{itemize}
+
 \end{subsection}
-\begin{subsection}{Performance}
-Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
+\begin{subsection}{Performance and Validation}
+We determined satisfactory performance by evaluating the BDT's ROC curves for testing and training (Fig. \ref{fig:bdt-performance}) as well as the sanity of the BDT's feature rankings (Fig. \ref{fig:bdt-vars}). We also checked for background sculpting by two methods. First, we looked at the plot of the BDT scores versus the reconstructed Higgs mass (Fig. \ref{fig:bdt-bkgsculpt1}). A correlation between high BDT scores (~1) and the known Higgs mass (125 GeV) would indicate that the BDT was simply learning and cutting on the reconstructed Higgs mass and thus sculpting the background. Second, we directly evaluated the background and signal distributions before and after making a tight cut ($D > 0.9$) on the BDT discriminant, where an artificial peak of the background inside of the signal region would directly show that the BDT was sculpting the background. We required that the BDT pass these two tests before proceeding to use it in the rest of the analysis.
 
 \begin{figure}[htb]
 \begin{center}
@@ -143,10 +169,6 @@ Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lor
 \caption{Left: ROC curve showing BDT testing (blue) and training (orange) performance. Right: Background (blue) and signal (red) distributions versus BDT score for testing (outline) and training (filled).}
 \label{fig:bdt-performance}
 \end{figure}
-\end{subsection}
-
-\begin{subsection}{Validation}
-Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
 
 \begin{figure}[htb]
 \begin{center}

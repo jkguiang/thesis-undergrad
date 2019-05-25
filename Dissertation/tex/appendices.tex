@@ -21,4 +21,12 @@ In the CMS Coordinate system, the $z$-axis is aligned along the beampipe, theref
 
 \begin{section}{Boosted Decision Trees}
 A Boosted Decision Tree (BDT) is simply an extension of a decision tree, which is can be visualized as follows: starting from a single ``node," two ``branches" emerge; at the end of each branch, there is another node that also joins two branches, and so on. In this picture, each node is a binary decision (i.e. $A > B$, $C == D$, etc.) and the two branches joined by each node represent the path ``traveled" by data should it pass or fail -- hence \textit{two} branches -- the condition. The tree may be optimized by recursively adding nodes and adjusting the ``splits" (the exact value over which the input is split) at each node until some given condition is met such that an optimal configuration is reached. This is essentially an accurate representation of the classical, ``cut-based" analysis that has been performed in High Energy for decades, where physicists filter out everything they are not looking for (background) with the hope that what they are looking for (signal) remains after the surrounding noise is cleared. A similar (both in practice is results) optimization of this technique is achieved by a combination of educated insight and trail and error. Thus, it is clear that the computational method of the decision tree would fit into the workflow of a High Energy physics analysis, but a decision tree is not an exceptionally powerful classifier on its own. However, they can be ``boosted" by creating several decision trees, collecting their output, and calculating a value called a ``determinant" (henceforth referred to as $D$), forming a stronger classifier from the collection of weak ones. The exact process of constructing and optimizing a BDT is dependent on the particular algorithm used and is beyond the scope of this paper.
+
+\begin{figure}[htb]
+\begin{center}
+\input{Dissertation/fig/bdt-knobs.tex}
+\end{center}
+\caption{XGBoost BDT hyperparameters\cite{cite-xgboost-params}.}
+\label{fig:bdt-knobs}
+\end{figure}
 \end{section}

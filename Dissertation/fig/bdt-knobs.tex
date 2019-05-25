@@ -1,0 +1,18 @@
+\begin{tabular}{p{.25\linewidth} p{.75\linewidth}}
+\toprule
+Variable & Definition \\
+\midrule
+\verb|objective| & Learning objective. (`binary:logistic': logistic regression for binary classification, output probability) \\
+\verb|eta| & Step size shrinkage used in update to prevents overfitting. (range: $[0,1]$) \\
+\verb|max_depth| & Maximum depth of a tree. Increasing this value will make the model more complex and more likely to overfit. (range: $[0,\infty]$) \\
+\verb|verbosity| & Verbosity of printing messages. Valid values are 0 (silent), 1 (warning), 2 (info), 3 (debug). \\
+\verb|nthread| & Number of parallel threads used to run XGBoost. \\
+\verb|eval_metric| & Evaluation metrics for validation data. (`auc': Area under the curve) \\
+\verb|subsample| & Subsample ratio of the training instances. (range: $(0,1]$) \\
+\verb|alpha| & L1 regularization term on weights. Increasing this value will make model more conservative. \\
+\verb|gamma| & Minimum loss reduction required to make a further partition on a leaf node of the tree. The larger \verb|gamma| is, the more conservative the algorithm will be. (range: $[0,\infty]$) \\
+\verb|lambda| & L2 regularization term on weights. Increasing this value will make model more conservative. Normalized to number of training examples. \\
+\verb|min_child_weight| & Minimum sum of instance weight (hessian) needed in a child. The larger \verb|min_child_weight| is, the more conservative the algorithm will be. \\
+\verb|colsample_bytree| & Subsample ratio of columns when constructing each tree. Subsampling occurs once for every tree constructed. \\
+\bottomrule
+\end{tabular}
