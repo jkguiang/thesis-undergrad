@@ -6,7 +6,7 @@ I begin with a brief discussion of the motivation behind looking for rare Higgs 
 
 \begin{section}{Motivation}
 
-The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays (see Fig. \ref{fig:whiggs}) are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. Searching for rare decays is thus experimentally exciting, because any significant measurement is direct evidence of the existence of new physics.
+The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays (see Fig. \ref{fig:whiggs}) are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
 
 \begin{figure}[htb]
 \begin{center}
@@ -22,11 +22,33 @@ The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho
 The analysis begins with data based on a sample of proton-proton collisions collected by the Compact Muon Solenoid (CMS) detector in the LHC. ``Interesting'' events are selected by the first level of the CMS trigger system which uses information from the detector's calorimeters and muon detectors to select events for analysis in a fixed time interval of less than 4 $\mu s$. These events are then further processed by a high-level trigger processor farm, which decreases the event rate from around 100 kHz to less than 1 kHz, before the data is stored. Finally, the particle-flow algorithm reconstructs and identifies all particles from the events selected by the CMS trigger system. With the data properly processed and promptly reconstructed ``online,'' further analysis can be carried out ``offline.''
 \end{subsection}
 \begin{subsection}{Baseline Selection}
-To start offline analysis, we first apply a baseline selection on data and Monte Carlo samples to filter out particularly irrelevant events. First, we require at least one ``good" lepton, qualified as:
+To start offline analysis, we first apply a baseline selection on data and Monte Carlo samples to filter out particularly irrelevant events. First, we require at one ``good" lepton, qualified as:
 \begin{itemize}
-    \item $p_{T}(\ell) > 10 GeV$
+    \item $p_{T}(\ell^{\pm}) > 10\textnormal{ GeV}$
+    \item $\eta(\ell^{\pm}) < 2.4$
+    \item $ID(e^{\pm})$ \verb|HAD_medium_noiso_v5|
+    \item $ID(\mu^{\pm})$ \verb|isMediumMuonPOG|
+    \item $I_{rel}(e^{\pm}) < 0.1$ using \verb|elMiniRelIsoCMS3_EA|
+    \item $I_{rel}(\mu^{\pm}) < 0.2$ using \verb|muMiniRelIsoCMS3_EA|
 \end{itemize}
 
+\noindent We also require one good photon, qualified as:
+\begin{itemize}
+    \item $p_{T}(\gamma) > 20\textnormal{ GeV}$
+    \item $\eta(\gamma) < 2.5$
+    \item $ID(\gamma)$ \verb|isMediumPhotonPOG_Fall17V2|
+    \item $I_{rel}(\gamma) < 0.06$
+    \item $\Delta R(\gamma, e^{\pm}) < 0.2$
+\end{itemize}
+\noindent where if two or more good $\ell$ or $\gamma$ candidates are found, the candidate with the highest $p_{T}$ is selected. Finally, we require two, oppositely charged hadrons. This is complicated by the fact that CMS does not distinguish pions and kaons in reconstruction, but we begin by requiring two good hadron ($h$) candidates qualified as:
+\begin{itemize}
+    \item $p_{T}(h^{\pm}) > 10\textnormal{ GeV}$
+    \item $\eta(h^{\pm}) < 2.4$
+    \item $0 \geq dz(h^{\pm}) < 0.1$
+    \item $I_{rel}(h^{+}+h^{-}) < 0.06$
+    \item $\Delta R(h^{+}, h^{-}) < 0.1$
+\end{itemize}
+\noindent Now, as mentioned previously, the the exact identity of these hadrons is ambiguous. They are saved, by default, as pions, so their four-momenta are all constructed using the pion's mass contribution to the energy component. We add these to form the $\rho$-candidate four-momentum and designate it as the ``pion hypothesis." Then, we manually set the energy-components of the hadron four-momenta using the kaon mass, add them to form the $\phi$-candidate four-momentum, and designate it as the ``kaon hypothesis." If two or more of either hypothesis is found, we select the hypothesis that is closest to the true, respective mass. This leads to the possibility of biasing the data, but we avoid this later by rejecting any events with more than one meson candidate.
 \end{subsection}
 \end{section}
 
@@ -37,17 +59,61 @@ Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lor
 
 \begin{section}{Boosted Decision Tree}
 \begin{subsection}{Introduction}
-A Boosted Decision Tree (BDT) was studied and found to be 20\% to 25\% better than the traditional, cut-based approach. 
+Based on the following basic study, we found that a Boosted Decision Tree (BDT) trained on Monte Carlo simulations of signal and background performed 20\% to 25\% better than traditional, cut-based methods. We determined an optimal BDT working point by sampling the BDT's ROC curve (generated using testing data and predictions) at each defined threshold value, then calculating an expected significance ($\sigma$) defined as:
+\begin{equation}
+    \sigma = \sqrt{2(s+b)\ln(1+s/b)-2s}
+\end{equation}
+\noindent where $s$ and $b$ are the number of signal and background events for a given threshold value. The optimal BDT working point is then given by the maximum $\sigma$-value. Next, we defined a general cut-based approach by the following cuts:
+\begin{itemize}
+    \item $1.0 < m_{\phi} < 1.04$
+    \item $\Delta R(K^{+}, K^{-}) < 0.015$
+    \item $p_{T}(\phi) > 25\textnormal{ GeV}$
+    \item $p_{T}(\gamma) > 40\textnormal{ GeV}$
+    \item $I_{rel}(\phi) < 0.01$
+\end{itemize}
+\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-vs-cuts.png}
+\end{center}
+\caption{Left: Expected significance ($\sigma$) versus BDT threshold value. Right: Comparison between an optimal BDT working point and cut-based method plotted on top of the BDT's ROC curve.}
+\label{fig:bdt-vs-cuts}
+\end{figure}
 \end{subsection}
 \begin{subsection}{Training}
-Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
+We began with the XGBoost python package, a well-known implementation of gradient-boosted decision trees. Twenty-two features were selected, from those saved during the baseline selection step, based on their merit as variables that are reasonably uncorrelated to the signal region (reconstructed Higgs boson mass). The unweighted distributions for all input features are shown in Fig. \ref{fig:bdt-vars}, but they are also listed below divided into categories for brevity and later reference:
+\begin{enumerate}[(i.)]
+    \item Missing Transverse Energy ($\slashed{E}_{T}$):
+    \begin{itemize}
+        \item $p_{T}(\slashed{E}_{T})$
+        \item $\varphi(\slashed{E}_{T})$
+    \end{itemize}
+    \item Basic Kinematics:
+    \begin{itemize}
+        \item $p_{T}(\gamma)$, $p_{T}(\phi)$
+        \item $\eta(\gamma)$, $\eta(\phi)$, $\eta(\ell^{\pm})$
+        \item $\varphi(\gamma)$, $\varphi(\phi)$, $\varphi(\ell^{\pm})$
+        \item $\Delta R(\gamma, \ell^{\pm})$, $\Delta R(\phi, \gamma)$, $\Delta R(K^{+}, K^{-})$
+    \end{itemize}
+    \item Masses:
+    \begin{itemize}
+        \item $m_{Z}$, $m_{\phi}$
+    \end{itemize}
+    \item MELA ``Magic" Angles:
+    \begin{itemize}
+        \item $\Phi$, $\Phi_{1}$
+        \item $\cos\theta_{1}$, $\cos\theta_{2}$, $\cos\theta^{*}$
+    \end{itemize}
+\end{enumerate}
 
-% TODO: Move this + more info to an appendix
+\noindent There are some important clarifications to make here. First, we scaled all $p_{T}$ quantities that are correlated to the Higgs and input into the BDT by the Higgs mass. Second, $\varphi$ refers to the azimuthal angle (see Fig. \ref{fig:cms-coords}) which is not to be confused with the $\phi$-meson. Finally, we calculated the quantities listed under (.iv) using MELA\cite{cite-mela} (all angles used are illustrated in Fig. \ref{fig:magic-angles}).
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=.95\linewidth]{Dissertation/fig/magic-angles.pdf}
 \end{center}
-\caption{Diagram due to Anderson et. al. \cite{magic-angles-cite} of Higgs-frame angles used for BDT training. The center diagram is most relevant under the following replacements: $Z, Z^*$ to $W, W^*$, $b, \bar{b}$ to $\rho/\phi, \gamma$; $\ell^+/\ell^-$ to $e^-,\mu^-, \nu_e/ \nu_\mu$.}
+\caption{Diagram due to Anderson et. al. \cite{magic-angles-cite} of Higgs-frame angles used for BDT training. The center diagram is most relevant under the following replacements: $Z, Z^*$ to $W, W^*$, $b, \bar{b}$ to $\rho/\phi, \gamma$; $\ell^+,\ell^-$ to $e^-/\mu^-, \nu_e/ \nu_\mu$.}
 \label{fig:magic-angles}
 \end{figure}
 
