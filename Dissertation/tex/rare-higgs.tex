@@ -2,22 +2,101 @@
 %  Search for Rare Higgs Decays
 %
 
+I begin with a brief discussion of the motivation behind looking for rare Higgs decays like $H \rightarrow \rho+\gamma$ and $H \rightarrow \phi+\gamma$. Then, I outline the event selection methods and relevant backgrounds. Finally, I describe the Boosted Decision tree we used in detail, followed by the results of the analysis.
+
 \begin{section}{Motivation}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu eros nisl. Donec sollicitudin nisl nisi, sit amet rutrum nibh faucibus sit amet. In a efficitur dui. Nunc at sagittis urna. Quisque venenatis nec risus quis eleifend. Fusce id nulla in urna tristique iaculis. In et consectetur risus, nec commodo justo. In augue enim, efficitur ac commodo quis, tempus ac arcu. Sed porta dolor ultrices, pellentesque tellus eu, mollis mi. Phasellus et condimentum odio. Curabitur condimentum rhoncus sem, eget sagittis eros rhoncus sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas ac felis aliquam orci eleifend faucibus vitae sit amet mauris. Fusce vel magna mi. Aenean commodo pellentesque tellus, ut iaculis est auctor et.
+The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays (see Fig. \ref{fig:whiggs}) are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. Searching for rare decays is thus experimentally exciting, because any significant measurement is direct evidence of the existence of new physics.
 
+\begin{figure}[htb]
+\begin{center}
+\input{Dissertation/fig/whiggs.tex}
+\end{center}
+\caption{Feynman diagram\cite{cite-tikz-feynman} for $H \rightarrow \rho+\gamma$ and $H \rightarrow \phi+\gamma$ associated production.}
+\label{fig:whiggs}
+\end{figure}
 \end{section}
 
-\begin{section}{Analysis Methods}
-\begin{subsection}{Data}
+\begin{section}{Event Selection}
+\begin{subsection}{Data Aquisition}
 The analysis begins with data based on a sample of proton-proton collisions collected by the Compact Muon Solenoid (CMS) detector in the LHC. ``Interesting'' events are selected by the first level of the CMS trigger system which uses information from the detector's calorimeters and muon detectors to select events for analysis in a fixed time interval of less than 4 $\mu s$. These events are then further processed by a high-level trigger processor farm, which decreases the event rate from around 100 kHz to less than 1 kHz, before the data is stored. Finally, the particle-flow algorithm reconstructs and identifies all particles from the events selected by the CMS trigger system. With the data properly processed and promptly reconstructed ``online,'' further analysis can be carried out ``offline.''
 \end{subsection}
-\begin{subsection}{Monte Carlo}
-A private set of Monte Carlo signal data was generated using Pythia and the CMSSW framework for the purposes of this study. Normally, an analysis would rely on officially-produced simulations, but for rare decays like those evaluated here, more specific simulation was called for. However, officially-produced Monte Carlo data was used for simulating background. 
+\begin{subsection}{Baseline Selection}
+To start offline analysis, we first apply a baseline selection on data and Monte Carlo samples to filter out particularly irrelevant events. First, we require at least one ``good" lepton, qualified as:
+\begin{itemize}
+    \item $p_{T}(\ell) > 10 GeV$
+\end{itemize}
+
 \end{subsection}
-\begin{subsection}{Backgrounds}
+\end{section}
+
+\begin{section}{Backgrounds}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu eros nisl. Donec sollicitudin nisl nisi, sit amet rutrum nibh faucibus sit amet. In a efficitur dui. Nunc at sagittis urna. Quisque venenatis nec risus quis eleifend. Fusce id nulla in urna tristique iaculis. In et consectetur risus, nec commodo justo. In augue enim, efficitur ac commodo quis, tempus ac arcu. Sed porta dolor ultrices, pellentesque tellus eu, mollis mi. Phasellus et condimentum odio. Curabitur condimentum rhoncus sem, eget sagittis eros rhoncus sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas ac felis aliquam orci eleifend faucibus vitae sit amet mauris. Fusce vel magna mi. Aenean commodo pellentesque tellus, ut iaculis est auctor et.
 Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
+\end{section}
+
+\begin{section}{Boosted Decision Tree}
+\begin{subsection}{Introduction}
+A Boosted Decision Tree (BDT) was studied and found to be 20\% to 25\% better than the traditional, cut-based approach. 
+\end{subsection}
+\begin{subsection}{Training}
+Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
+
+% TODO: Move this + more info to an appendix
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/magic-angles.pdf}
+\end{center}
+\caption{Diagram due to Anderson et. al. \cite{magic-angles-cite} of Higgs-frame angles used for BDT training. The center diagram is most relevant under the following replacements: $Z, Z^*$ to $W, W^*$, $b, \bar{b}$ to $\rho/\phi, \gamma$; $\ell^+/\ell^-$ to $e^-,\mu^-, \nu_e/ \nu_\mu$.}
+\label{fig:magic-angles}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-training.png}
+\end{center}
+\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied, so they do not completely represent what the BDT saw, however they do provide some insight into the motivation behind the BDT's variable rankings.}
+\label{fig:bdt-training}
+\end{figure}
+\end{subsection}
+\begin{subsection}{Performance}
+Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo. Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
+
+\begin{figure}[htb]
+\begin{center}
+\input{Dissertation/fig/bdt-vars.tex}
+\end{center}
+\caption{Top ten variables as ranked by the BDT by gain. All input variables are reconstruction-level Monte Carlo data, and all $p_{T}$ variables are scaled by $m_{H}.$}
+\label{fig:bdt-vars}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-performance.png}
+\end{center}
+\caption{Left: ROC curve showing BDT testing (blue) and training (orange) performance. Right: Background (blue) and signal (red) distributions versus BDT score for testing (outline) and training (filled).}
+\label{fig:bdt-performance}
+\end{figure}
+\end{subsection}
+
+\begin{subsection}{Validation}
+Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt1.png}
+\end{center}
+\caption{Plot of the BDT score versus the reconstructed Higgs mass. A heavy correlation between high score and the true Higgs mass would suggest background is being sculpted.}
+\label{fig:bdt-bkgsculpt1}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt2.png}
+\end{center}
+\caption{Reconstructed Higgs mass distribution for signal (blue) and background (red) before (filled) and after (outline) requiring $D > 0.9$ where $D$ is the BDT discriminant.}
+\label{fig:bdt-bkgsculpt2}
+\end{figure}
 \end{subsection}
 \end{section}
 

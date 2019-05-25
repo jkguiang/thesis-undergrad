@@ -252,7 +252,7 @@
   \thispagestyle{empty}
   \null\vfill
   \begin{center}
-    {\fmfont The Honors Senior Thesis of {\@author} is approved.} \\
+    {\fmfont The Bachelor's Honors Thesis of {\@author} is approved.} \\
 
     \vspace{.25in} \vspace{\@approvalspace}
     $\:\overline{~~~~ \mbox{\rule{0in}{0.16in} \hspace{3.5in}}}\:$ \\
