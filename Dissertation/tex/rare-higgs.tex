@@ -8,7 +8,7 @@ I begin with a brief discussion of the motivation behind looking for rare Higgs 
 
 The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at current, human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
 
-Now, ideally, we would search for these decays via \textit{direct} production, that is, when a Higgs boson is produced by gluon-gluon fusion (Fig. \ref{fig:direct-prod}), then decays to a photon and a $\phi$ or $\rho$ meson. However, CMS does not have a dedicated trigger for detecting pions or kaons (the final-state products of the $\phi$ and $\rho$ mesons respectively), so the only possibly detectable particle would be the photon. However, since the Higgs mass is 125 GeV, the photon and meson both have a momentum of approximately 60 GeV, so the photon is well below the threshold of the CMS single photon trigger\cite{cite-hlt}. Therefore, we chose an associate production mode, namely, $W^{\pm}+H$ (Fig. \ref{fig:whiggs-prod}), where $W \rightarrow \ell^{\pm}+\nu_{\ell}$. We can easily trigger on the leptons produced by the $W$ boson, and the Higgs comes for free. At the same time, we lose a \textit{lot} of signal, since this process is far more rare. We also have to deal with more background, since we are including more particles in the signature we are searching for. Ultimately these consequences consolidate into an overall loss of sensitivity, but alternative associated productions ($Z+H$, for instance) face similar challenges.
+Now, ideally, we would search for these decays via \textit{direct} production, that is, when a Higgs boson is produced by gluon-gluon fusion (Fig. \ref{fig:direct-prod}), then decays to a photon and a $\phi$ or $\rho$ meson. However, CMS does not have a dedicated trigger for detecting pions or kaons (the final-state products of the $\phi$ and $\rho$ mesons respectively), so the only possibly detectable particle would be the photon. However, since the Higgs mass is 125 GeV, the photon and meson both have a momentum of approximately 60 GeV at most, so the photon is well below the threshold of the CMS single photon trigger\cite{cite-hlt}. Therefore, we chose an associate production mode, namely, $W^{\pm}+H$ (Fig. \ref{fig:whiggs-prod}), where $W \rightarrow \ell^{\pm}+\nu_{\ell}$. We can easily trigger on the leptons produced by the $W$ boson, and the Higgs comes for free. At the same time, we lose a \textit{lot} of signal, since this process is far more rare. We also have to deal with more background, since we are including more particles in the signature we are searching for. Ultimately these consequences consolidate into an overall loss of sensitivity, but alternative associated productions ($Z+H$, for instance) face similar challenges.
 
 \begin{figure}[htb]
 \begin{center}
@@ -63,38 +63,14 @@ To start offline analysis, we first apply a baseline selection on data and Monte
 \end{section}
 
 \begin{section}{Backgrounds}
-Backgrounds for this analysis can be classified into three processes, each of which will described in detail:
-\begin{enumerate}
-    \item Real prompt photon from W events
-    \item Fake photon from W events
-    \item Fake photon from an electron in Z events
-\end{enumerate}
+We are looking for two final-state particles: one photon and one $\rho$ or $\phi$ meson. However, there are a number of processes besides the Higgs decays we are interested in that could present the same signature. In the following paragraphs, I describe how we might get false photons and false mesons that, when combined, present a signal-like signature.
+
+We may get a real, prompt photon in W events where a photon was radiated by one of the initial-state quarks (Fig. \ref{fig:whiggs-prod}). We might also get a fake photon from misidentified jets in W events. Finally, from Z events, we can get fake photons from misidentified electrons.
+
+Fake mesons may be produced by any two tracks that happen to both be isolated from all particles other than each other and have a combined invariant mass that lands in the $\rho$ or $\phi$-meson Breit-Wigner lineshapes.
 \end{section}
 
 \begin{section}{Boosted Decision Tree}
-\begin{subsection}{Introduction}
-Based on the following basic study, we found that a Boosted Decision Tree (BDT) trained on Monte Carlo simulations of signal and background performed 20\% to 25\% better than traditional, cut-based methods. We determined an optimal BDT working point by sampling the BDT's ROC curve (generated using testing data and predictions) at each defined threshold value, then calculating an expected significance ($\sigma$) defined as:
-\begin{equation}
-    \sigma = \sqrt{2(s+b)\ln(1+s/b)-2s}
-\end{equation}
-\noindent where $s$ and $b$ are the number of signal and background events for a given threshold value. The optimal BDT working point is then given by the maximum $\sigma$-value. Next, we defined a general cut-based approach by the following cuts:
-\begin{itemize}
-    \item $1.0 < m_{\phi} < 1.04\textnormal{ GeV}$
-    \item $\Delta R(K^{+}, K^{-}) < 0.015$
-    \item $p_{T}(\phi) > 25\textnormal{ GeV}$
-    \item $p_{T}(\gamma) > 40\textnormal{ GeV}$
-    \item $I_{rel}(\phi) < 0.01$
-\end{itemize}
-\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}. Note that the terms BDT ``score," ``threshold," and ``discriminant" will be used interchangeably throughout the remainder of this paper with the understanding that they are the same quantity $D \in [0,1]$.
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-vs-cuts.png}
-\end{center}
-\caption{Left: Expected significance ($\sigma$) versus BDT threshold value. Right: Comparison between an optimal BDT working point and cut-based method plotted on top of the BDT's ROC curve.}
-\label{fig:bdt-vs-cuts}
-\end{figure}
-\end{subsection}
 \begin{subsection}{Training}
 Prior to training, we made the following cuts that prevent over-training the BDT by essentially pre-training it to cut on each respective variable:
 
@@ -138,14 +114,6 @@ We began with the XGBoost python package, a well-known implementation of gradien
 \end{center}
 \caption{Diagram due to Anderson et. al. \cite{magic-angles-cite} of Higgs-frame angles used for BDT training. The center diagram is most relevant under the following replacements: $Z, Z^*$ to $W, W^*$, $b, \bar{b}$ to $\rho/\phi, \gamma$; $\ell^+,\ell^-$ to $e^-/\mu^-, \nu_e/ \nu_\mu$.}
 \label{fig:magic-angles}
-\end{figure}
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-training.png}
-\end{center}
-\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied, so they do not completely represent what the BDT saw, however they do provide some insight into the motivation behind the BDT's variable rankings.}
-\label{fig:bdt-training}
 \end{figure}
 
 With these features properly defined, we ran the BDT for 200 training rounds with the following model hyperparameters selected to maximize BDT efficiency without overtraining (See Fig. \ref{fig:bdt-knobs} for hyperameter definitions):
@@ -200,10 +168,60 @@ We determined satisfactory performance by evaluating the BDT's ROC curves for te
 \label{fig:bdt-bkgsculpt2}
 \end{figure}
 \end{subsection}
+\begin{subsection}{Comparison to Cut-Based Approach}
+Based on the following basic study, we found that a Boosted Decision Tree (BDT) trained on Monte Carlo simulations of signal and background performed 20\% to 25\% better than traditional, cut-based methods. We determined an optimal BDT working point by sampling the BDT's ROC curve (generated using testing data and predictions) at each defined threshold value, then calculating an expected significance ($\sigma$) defined as:
+\begin{equation}\label{expsig-eq}
+    \sigma = \sqrt{2(s+b)\ln(1+s/b)-2s}
+\end{equation}
+\noindent where $s$ and $b$ are the number of signal and background events for a given threshold value. The optimal BDT working point is then given by the maximum $\sigma$-value. Next, we defined a general cut-based approach by the following cuts:
+\begin{itemize}
+    \item $1.0 < m_{\phi} < 1.04\textnormal{ GeV}$
+    \item $\Delta R(K^{+}, K^{-}) < 0.015$
+    \item $p_{T}(\phi) > 25\textnormal{ GeV}$
+    \item $p_{T}(\gamma) > 40\textnormal{ GeV}$
+    \item $I_{rel}(\phi) < 0.01$
+\end{itemize}
+\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}. Note that the terms BDT ``score," ``threshold," and ``discriminant" will be used interchangeably throughout the remainder of this paper with the understanding that they are the same quantity $D \in [0,1]$.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-vs-cuts.png}
+\end{center}
+\caption{Left: Expected significance ($\sigma$) versus BDT threshold value. Right: Comparison between an optimal BDT working point and cut-based method plotted on top of the BDT's ROC curve.}
+\label{fig:bdt-vs-cuts}
+\end{figure}
+\end{subsection}
+\begin{subsection}{Optimization for Data}
+With the BDT validated, we proceeded to calculated a proper BDT working point for cutting on data. We noticed that the Monte Carlo samples were not properly modeling the data in the signal region of the BDT discriminant (Fig. \ref{fig:bdt-thresh-dist}). Thus, we concluded that we could not sample the BDT testing ROC curve for an effective working point. Instead, we fed the BDT ROC curve data as background in addition to signal Monte Carlo. We then sampled this distribution, calculated expected significance again using Eq. \ref{expsig-eq}, and took the best BDT working point to be at the threshold with maximum expected significance (Fig. \ref{fig:bdt-data-expsig}).
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-threshBySample.png}
+\end{center}
+\caption{Stacked BDT discriminant distribution plot by sample.}
+\label{fig:bdt-thresh-dist}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-data-expsig.png}
+\end{center}
+\caption{Expected significance versus BDT threshold.}
+\label{fig:bdt-data-expsig}
+\end{figure}
+
+\end{subsection}
 \end{section}
 
 \begin{section}{Results}
-
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu eros nisl. Donec sollicitudin nisl nisi, sit amet rutrum nibh faucibus sit amet. In a efficitur dui. Nunc at sagittis urna. Quisque venenatis nec risus quis eleifend. Fusce id nulla in urna tristique iaculis. In et consectetur risus, nec commodo justo. In augue enim, efficitur ac commodo quis, tempus ac arcu. Sed porta dolor ultrices, pellentesque tellus eu, mollis mi. Phasellus et condimentum odio. Curabitur condimentum rhoncus sem, eget sagittis eros rhoncus sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas ac felis aliquam orci eleifend faucibus vitae sit amet mauris. Fusce vel magna mi. Aenean commodo pellentesque tellus, ut iaculis est auctor et.
-
+Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
 \end{section}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-training.png}
+\end{center}
+\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied, so they do not completely represent what the BDT saw, however they do provide some insight into the motivation behind the BDT's variable rankings.}
+\label{fig:bdt-training}
+\end{figure}
