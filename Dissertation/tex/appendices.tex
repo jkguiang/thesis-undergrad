@@ -1,5 +1,5 @@
 \chapter{Technical Details}
-\begin{section}{CMS Coordinate System}
+\begin{section}{CMS Coordinate System}\label{appendix:cms-coords}
 
 In the CMS Coordinate system, the $z$-axis is aligned along the beampipe, therefore running parallel to the barrel and perpendicular to the endcap of the detector. The $x$-axis points radially towards the center of the LHC, and the y-axis points orthogonal to $x$ and $z$. The azimuthal angle $\varphi$ is defined about the $z$-axis, as in cylindrical coordinates, and the pseudo-rapidity $\eta$ is defined as
 
@@ -24,7 +24,7 @@ The following quantities are defined using the CMS Coordinate System defined in 
 \begin{equation}
     \Delta R(x_1, x_2) = \sqrt{\Delta\varphi(x_1, x_2)^{2}+\Delta\eta(x_1, x_2)^{2}}
 \end{equation}
-\noindent where $\Delta\eta(x_1, x_2) = \eta(x_2)-\eta(x_1)$, and $\Delta\varphi(x_1, x_2) = |\varphi(x_2) - \varphi(x_1)|$ is the \textit{inner} angle between the $x_1$ and $x_2$ three-momenta), such that $\Delta\varphi \in [0, 2\pi]$. Then, the isolation $I$ of a particle $x$ is defined as the sum of transverse momentum $p_{T}$ in a cone of $\Delta R < 0.4$ around that particle. Finally, the ``relative" isolation $I_{rel}$ of a particle $x$ is defined as:
+\noindent where $\Delta\eta(x_1, x_2) = \eta(x_2)-\eta(x_1)$, and $\Delta\varphi(x_1, x_2) = |\varphi(x_2) - \varphi(x_1)|$ is the \textit{inner} angle between the $x_1$ and $x_2$ three-momenta), such that $\Delta\varphi \in [0, 2\pi]$. Then, the isolation $I$ of a particle $x$ is defined as the sum of transverse momentum $p_{T}$ in a cone of $\Delta R < 0.4$\cite{cite-iso-dR} around that particle. Finally, the ``relative" isolation $I_{rel}$ of a particle $x$ is defined as:
 \begin{equation}
     I_{rel}(x) = \frac{I(x)}{p_{T}(x)}
 \end{equation}

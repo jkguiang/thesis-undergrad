@@ -75,8 +75,8 @@ Fake mesons may be produced by any two tracks that happen to both be isolated fr
 Prior to training, we made the following cuts that prevent over-training the BDT by essentially pre-training it to cut on each respective variable:
 
 \begin{itemize}
-    \item $1.0 < m_{\phi} < 1.04\textnormal{ GeV}$
-    \item $80 < m_{Z} < 95\textnormal{ GeV}$
+    \item $1.0 < m_{K^{+}K^{-}} < 1.04\textnormal{ GeV}$
+    \item $80 < m_{\ell\gamma} < 95\textnormal{ GeV}$
 \end{itemize}
 
 \noindent where each was chosen because of the narrow width of their distributions. Then, because BDT's are vulnerable to low statistics, we also added several extraneous, orthogonal datasets that were unnecessary for the greater analysis, but served as useful, accurate background shapes. Ultimately, we gave BDT 40563 training and 13522 testing events.
@@ -90,14 +90,14 @@ We began with the XGBoost python package, a well-known implementation of gradien
     \end{itemize}
     \item Basic Kinematics:
     \begin{itemize}
-        \item $p_{T}(\gamma)$, $p_{T}(\phi)$
-        \item $\eta(\gamma)$, $\eta(\phi)$, $\eta(\ell^{\pm})$
-        \item $\varphi(\gamma)$, $\varphi(\phi)$, $\varphi(\ell^{\pm})$
-        \item $\Delta R(\gamma, \ell^{\pm})$, $\Delta R(\phi, \gamma)$, $\Delta R(K^{+}, K^{-})$
+        \item $p_{T}(\gamma)$, $p_{T}(K^{+}K^{-})$
+        \item $\eta(\gamma)$, $\eta(K^{+}K^{-})$, $\eta(\ell^{\pm})$
+        \item $\varphi(\gamma)$, $\varphi(K^{+}K^{-})$, $\varphi(\ell^{\pm})$
+        \item $\Delta R(\gamma, \ell^{\pm})$, $\Delta R(K^{+}K^{-}, \gamma)$, $\Delta R(K^{+}, K^{-})$
     \end{itemize}
     \item Masses:
     \begin{itemize}
-        \item $m_{Z}$, $m_{\phi}$
+        \item $m_{\ell\gamma}$, $m_{K^{+}K^{-}}$
     \end{itemize}
     \item MELA ``Magic" Angles:
     \begin{itemize}
@@ -140,7 +140,7 @@ We determined satisfactory performance by evaluating the BDT's ROC curves for te
 \begin{center}
 \input{Dissertation/fig/bdt-vars.tex}
 \end{center}
-\caption{Top ten variables as ranked by the BDT by gain. All input variables are reconstruction-level Monte Carlo data, and all $p_{T}$ variables are scaled by $m_{H}.$}
+\caption{Top ten variables as ranked by the BDT by gain. All input variables are reconstruction-level Monte Carlo data, and all $p_{T}$ variables are scaled by $m_{K^{+}K^{-}\gamma}.$}
 \label{fig:bdt-vars}
 \end{figure}
 
@@ -175,11 +175,11 @@ Based on the following basic study, we found that a Boosted Decision Tree (BDT) 
 \end{equation}
 \noindent where $s$ and $b$ are the number of signal and background events for a given threshold value. The optimal BDT working point is then given by the maximum $\sigma$-value. Next, we defined a general cut-based approach by the following cuts:
 \begin{itemize}
-    \item $1.0 < m_{\phi} < 1.04\textnormal{ GeV}$
+    \item $1.0 < m_{K^{+}K^{-}} < 1.04\textnormal{ GeV}$
     \item $\Delta R(K^{+}, K^{-}) < 0.015$
-    \item $p_{T}(\phi) > 25\textnormal{ GeV}$
+    \item $p_{T}(K^{+}K^{-}) > 25\textnormal{ GeV}$
     \item $p_{T}(\gamma) > 40\textnormal{ GeV}$
-    \item $I_{rel}(\phi) < 0.01$
+    \item $I_{rel}(K^{+}K^{-}) < 0.01$
 \end{itemize}
 \noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}. Note that the terms BDT ``score," ``threshold," and ``discriminant" will be used interchangeably throughout the remainder of this paper with the understanding that they are the same quantity $D \in [0,1]$.
 
