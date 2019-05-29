@@ -4,15 +4,20 @@
 
 I begin with a brief discussion of the motivation behind looking for rare Higgs decays like $H \rightarrow \rho+\gamma$ and $H \rightarrow \phi+\gamma$, specifically via the associated $WH$ rather than direct production. Then, I outline the event selection methods and relevant backgrounds. Finally, I describe the Boosted Decision tree we used in detail, followed by the results of the analysis.
 
-\begin{section}{Motivation}
+\begin{section}{Motivation}\label{motivation}
 
 The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at current, human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
 
-Now, ideally, we would search for these decays via \textit{direct} production, that is, when a Higgs boson is produced by gluon-gluon fusion (Fig. \ref{fig:direct-prod}), then decays to a photon and a $\phi$ or $\rho$ meson. However, CMS does not have a dedicated trigger for detecting pions or kaons (the final-state products of the $\phi$ and $\rho$ mesons respectively), so the only possibly detectable particle would be the photon. However, since the Higgs mass is 125 GeV, the photon and meson both have a momentum of approximately 60 GeV at most, so the photon is well below the threshold of the CMS single photon trigger\cite{cite-hlt}. Therefore, we chose an associate production mode, namely, $W^{\pm}+H$ (Fig. \ref{fig:whiggs-prod}), where $W \rightarrow \ell^{\pm}+\nu_{\ell}$. We can easily trigger on the leptons produced by the $W$ boson, and the Higgs comes for free. At the same time, we lose a \textit{lot} of signal, since this process is far more rare. We also have to deal with more background, since we are including more particles in the signature we are searching for. Ultimately these consequences consolidate into an overall loss of sensitivity, but alternative associated productions ($Z+H$, for instance) face similar challenges.
+Now, ideally, we would search for these decays via \textit{direct} production, that is, when a Higgs boson is produced by gluon-gluon fusion (Fig. \ref{fig:direct-prod}), then decays to a photon and a $\phi$ or $\rho$ meson. However, CMS does not have a dedicated trigger for detecting pions or kaons (the final-state products of the $\phi$ and $\rho$ mesons respectively), so the only possibly detectable particle would be the photon. However, since the Higgs mass is 125 GeV, the photon and meson both have a momentum of approximately 60 GeV at most, so the photon is well below the threshold of the CMS single photon trigger\cite{cite-hlt}. Therefore, we chose an associated production mode, namely, $W^{\pm}+H$ (Fig. \ref{fig:whiggs-prod}), where $W \rightarrow \ell^{\pm}+\nu_{\ell}$. We can easily trigger on the leptons produced by the $W$ boson, and the Higgs comes for free. At the same time, we lose a \textit{lot} of signal, since this process is far more rare. We also have to deal with more background, since we are including more particles in the signature we are searching for. Ultimately these consequences consolidate into an overall loss of sensitivity, but alternative associated productions ($Z+H$, for instance) face similar challenges.
 
 \begin{figure}[htb]
 \begin{center}
-\input{Dissertation/fig/direct-prod.tex}
+\subfloat      {
+\scalebox{.45}[0.45]{\input{Dissertation/fig/higgs-direct.tex}}
+}\quad
+\subfloat      {
+\scalebox{.45}[0.45]{\input{Dissertation/fig/higgs-qloop.tex}}
+}
 \end{center}
 \caption{Feynman diagram\cite{cite-tikz-feynman} for primary mechanism of the direct production of the Higgs boson at the LHC where $H \rightarrow \rho+\gamma$ or $H \rightarrow \phi+\gamma$.}
 \label{fig:direct-prod}
@@ -20,18 +25,24 @@ Now, ideally, we would search for these decays via \textit{direct} production, t
 
 \begin{figure}[htb]
 \begin{center}
-\input{Dissertation/fig/whiggs-prod.tex}
+\subfloat      {
+\scalebox{.55}[0.55]{\input{Dissertation/fig/whiggs-direct.tex}}
+}\quad
+\subfloat      {
+\scalebox{.55}[0.55]{\input{Dissertation/fig/whiggs-qloop.tex}}
+}
 \end{center}
 \caption{Feynman diagram\cite{cite-tikz-feynman} for primary mechanism of the associated $WH$ production at the LHC studied in this analysis.}
 \label{fig:whiggs-prod}
 \end{figure}
+
 \end{section}
 
 \begin{section}{Event Selection}
-\begin{subsection}{Data Aquisition}
+\begin{subsection}{Data Aquisition}\label{data-aquisition}
 The analysis begins with data based on a sample of proton-proton collisions collected by the Compact Muon Solenoid (CMS) detector in the LHC. ``Interesting'' events are selected by the first level of the CMS trigger system which uses information from the detector's calorimeters and muon detectors to select events for analysis in a fixed time interval of less than 4 $\mu s$. These events are then further processed by a high-level trigger processor farm, which decreases the event rate from around 100 kHz to less than 1 kHz, before the data is stored. Finally, the particle-flow algorithm reconstructs and identifies all particles from the events selected by the CMS trigger system. With the data properly processed and promptly reconstructed ``online,'' further analysis can be carried out ``offline.''
 \end{subsection}
-\begin{subsection}{Baseline Selection}
+\begin{subsection}{Baseline Selection}\label{baseline-selection}
 To start offline analysis, we first apply a baseline selection on data and Monte Carlo samples to filter out particularly irrelevant events. First, we require at one ``good" lepton, qualified as:
 \begin{itemize}
     \item $p_{T}(\ell^{\pm}) > 10\textnormal{ GeV}$
@@ -50,7 +61,7 @@ To start offline analysis, we first apply a baseline selection on data and Monte
     \item $I_{rel}(\gamma) < 0.06$
     \item $\Delta R(\gamma, e^{\pm}) < 0.2$
 \end{itemize}
-\noindent where if two or more good $\ell$ or $\gamma$ candidates are found, the candidate with the highest $p_{T}$ is selected. Finally, we require two, oppositely charged hadrons. This is complicated by the fact that CMS does not distinguish pions and kaons in reconstruction, but we begin by requiring one good hadron ($h$) candidate pair ($h^{+}, h^{-}$), which describe some unidentified mother meson ($M$), qualified as:
+\noindent where if two or more good $\ell$ or $\gamma$ candidates are found, the candidate with the highest $p_{T}$ is selected. Finally, we require two, oppositely charged hadrons. This is complicated by the fact that CMS does not distinguish pions and kaons in reconstruction, but we begin by requiring one good hadron ($h$) candidate pair ($h^{+}, h^{-}$), which are assumed to be the daughters of some unindentified mother meson ($M$), qualified as:
 \begin{itemize}
     \item $p_{T}(h^{\pm}) > 10\textnormal{ GeV}$
     \item $\eta(h^{\pm}) < 2.4$
@@ -58,11 +69,11 @@ To start offline analysis, we first apply a baseline selection on data and Monte
     \item $I_{rel}(M) < 0.06$
     \item $\Delta R(h^{+}, h^{-}) < 0.1$
 \end{itemize}
-\noindent where $I_{rel}(M) = \frac{max(I(h^{+}), I(h^{-}))}{p_{T}(M)}$. Now, as mentioned previously, the the exact identity of these hadrons is ambiguous. They are saved, by default, as pions, so their four-momenta are all constructed using the pion's mass contribution to the energy component. We add these to form the $\rho$-candidate four-momentum and designate it as the ``pion hypothesis." Then, we manually set the energy-components of the hadron four-momenta using the kaon mass, add them to form the $\phi$-candidate four-momentum, and designate it as the ``kaon hypothesis." If two or more of either hypothesis is found, we select the hypothesis that is closest to the true, respective mass. This leads to the possibility of biasing the data, but we avoid this later by rejecting any events with more than one meson candidate.
+\noindent where $I_{rel}(M) = \frac{max(I(h^{+}), I(h^{-}))}{p_{T}(M)}$. Now, as mentioned previously, the the exact identity of these hadrons is ambiguous. They are saved, by default, as pions, so their four-momenta are all constructed using the pion's mass contribution to the energy component. We add these to form the $\rho$-candidate four-momentum and designate it as the ``pion hypothesis." Then, we manually set the energy-components of the hadron four-momenta using the kaon mass, add them to form the $\phi$-candidate four-momentum, and designate it as the ``kaon hypothesis." If two or more of either hypothesis is found, we select the hypothesis that is closest to the true, respective mass. This leads to the possibility of biasing the data, but we avoid this later by rejecting any events that had more than one meson candidate.
 \end{subsection}
 \end{section}
 
-\begin{section}{Backgrounds}
+\begin{section}{Backgrounds}\label{backgrounds}
 We are looking for two final-state particles: one photon and one $\rho$ or $\phi$ meson. However, there are a number of processes besides the Higgs decays we are interested in that could present the same signature. In the following paragraphs, I describe how we might get false photons and false mesons that, when combined, present a signal-like signature.
 
 We may get a real, prompt photon in W events where a photon was radiated by one of the initial-state quarks (Fig. \ref{fig:whiggs-prod}). We might also get a fake photon from misidentified jets in W events. Finally, from Z events, we can get fake photons from misidentified electrons.
@@ -71,17 +82,17 @@ Fake mesons may be produced by any two tracks that happen to both be isolated fr
 \end{section}
 
 \begin{section}{Boosted Decision Tree}
-\begin{subsection}{Training}
+\begin{subsection}{Training}\label{training}
 Prior to training, we made the following cuts that prevent over-training the BDT by essentially pre-training it to cut on each respective variable:
 
 \begin{itemize}
-    \item $1.0 < m_{K^{+}K^{-}} < 1.04\textnormal{ GeV}$
+    \item $1.0 < m_{K^{+}K^{-}} < 1.04\textnormal{ GeV}$ or $0.5 < m_{\pi^{+}\pi^{-}} < 1.1\textnormal{ GeV}$
     \item $80 < m_{\ell\gamma} < 95\textnormal{ GeV}$
 \end{itemize}
 
-\noindent where each was chosen because of the narrow width of their distributions. Then, because BDT's are vulnerable to low statistics, we also added several extraneous, orthogonal datasets that were unnecessary for the greater analysis, but served as useful, accurate background shapes. Ultimately, we gave BDT 40563 training and 13522 testing events.
+\noindent where each was chosen based on the width of their distributions. Then, because BDT's are vulnerable to low statistics, we also added several extraneous, orthogonal datasets that were unnecessary for the greater analysis, but served as useful, accurate background shapes.
 
-We began with the XGBoost python package, a well-known implementation of gradient-boosted decision trees. Twenty-two features were selected, from those saved during the baseline selection step, based on their merit as variables that are reasonably uncorrelated to the signal region (reconstructed Higgs boson mass). The unweighted distributions for all input features are shown in Fig. \ref{fig:bdt-vars}, but they are also listed below divided into categories for brevity and later reference:
+We selected the XGBoost python package, a well-known implementation of gradient-boosted decision trees. Twenty features were selected from those saved during the baseline selection step based on their merit as variables that are reasonably uncorrelated to the reconstructed Higgs boson mass. The unweighted distributions for all input features are shown in Fig. \ref{fig:bdt-vars}, but they are also listed below divided into categories for brevity and later reference:
 \begin{enumerate}[(i.)]
     \item Missing Transverse Energy ($\slashed{E}_{T}$):
     \begin{itemize}
@@ -90,14 +101,14 @@ We began with the XGBoost python package, a well-known implementation of gradien
     \end{itemize}
     \item Basic Kinematics:
     \begin{itemize}
-        \item $p_{T}(\gamma)$, $p_{T}(K^{+}K^{-})$
-        \item $\eta(\gamma)$, $\eta(K^{+}K^{-})$, $\eta(\ell^{\pm})$
-        \item $\varphi(\gamma)$, $\varphi(K^{+}K^{-})$, $\varphi(\ell^{\pm})$
-        \item $\Delta R(\gamma, \ell^{\pm})$, $\Delta R(K^{+}K^{-}, \gamma)$, $\Delta R(K^{+}, K^{-})$
+        \item $p_{T}(\gamma)$, $p_{T}(h^{+}h^{-})$
+        \item $\eta(\gamma)$, $\eta(h^{+}h^{-})$, $\eta(\ell^{\pm})$
+        \item $\varphi(\gamma)$, $\varphi(h^{+}h^{-})$, $\varphi(\ell^{\pm})$
+        \item $\Delta R(\gamma, \ell^{\pm})$, $\Delta R(h^{+}h^{-}, \gamma)$, $\Delta R(h^{+}, h^{-})$
     \end{itemize}
     \item Masses:
     \begin{itemize}
-        \item $m_{\ell\gamma}$, $m_{K^{+}K^{-}}$
+        \item $m_{\ell\gamma}$, $m_{h^{+}h^{-}}$
     \end{itemize}
     \item MELA ``Magic" Angles:
     \begin{itemize}
@@ -133,14 +144,14 @@ With these features properly defined, we ran the BDT for 200 training rounds wit
 \end{itemize}
 
 \end{subsection}
-\begin{subsection}{Performance and Validation}
+\begin{subsection}{Performance and Validation}\label{perf-and-val}
 We determined satisfactory performance by evaluating the BDT's ROC curves for testing and training (Fig. \ref{fig:bdt-performance}) as well as the sanity of the BDT's feature rankings (Fig. \ref{fig:bdt-vars}). We also checked for background sculpting by two methods. First, we looked at the plot of the BDT scores versus the reconstructed Higgs mass (Fig. \ref{fig:bdt-bkgsculpt1}). A correlation between high BDT scores and the known Higgs mass (125 GeV) would indicate that the BDT was simply learning and cutting on the reconstructed Higgs mass and thus sculpting the background. Second, we directly evaluated the background and signal distributions before and after making a tight cut ($D > 0.9$) on the BDT discriminant, where an artificial peak of the background inside of the signal region would directly show that the BDT was sculpting the background. We required that the BDT pass these two tests before proceeding to use it in the rest of the analysis.
 
 \begin{figure}[htb]
 \begin{center}
 \input{Dissertation/fig/bdt-vars.tex}
 \end{center}
-\caption{Top ten variables as ranked by the BDT by gain. All input variables are reconstruction-level Monte Carlo data, and all $p_{T}$ variables are scaled by $m_{K^{+}K^{-}\gamma}.$}
+\caption{Top ten variables as ranked by the BDT by gain. All input variables are reconstruction-level Monte Carlo data, and all $p_{T}$ variables are scaled by $m_{h^{+}h^{-}\gamma}.$}
 \label{fig:bdt-vars}
 \end{figure}
 
@@ -152,76 +163,76 @@ We determined satisfactory performance by evaluating the BDT's ROC curves for te
 \label{fig:bdt-performance}
 \end{figure}
 
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt1.png}
-\end{center}
-\caption{Plot of the BDT score versus the reconstructed Higgs mass. A heavy correlation between high score and the true Higgs mass would suggest background is being sculpted.}
-\label{fig:bdt-bkgsculpt1}
-\end{figure}
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt2.png}
-\end{center}
-\caption{Reconstructed Higgs mass distribution for signal (blue) and background (red) before (filled) and after (outline) requiring $D > 0.9$ where $D$ is the BDT discriminant.}
-\label{fig:bdt-bkgsculpt2}
-\end{figure}
 \end{subsection}
-\begin{subsection}{Comparison to Cut-Based Approach}
-Based on the following basic study, we found that a Boosted Decision Tree (BDT) trained on Monte Carlo simulations of signal and background performed 20\% to 25\% better than traditional, cut-based methods. We determined an optimal BDT working point by sampling the BDT's ROC curve (generated using testing data and predictions) at each defined threshold value, then calculating an expected significance ($\sigma$) defined as:
+\begin{subsection}{Comparison to Cut-Based Approach}\label{comp-to-cuts}
+Based on the following basic study, we found that a Boosted Decision Tree (BDT) trained on Monte Carlo simulations of signal and background performed 10\% to 15\% better than traditional, cut-based methods. We determined an optimal BDT working point by sampling the BDT's ROC curve (generated using testing data and predictions) at each defined threshold value, then calculating an expected significance ($\sigma$) defined as:
 \begin{equation}\label{expsig-eq}
     \sigma = \sqrt{2(s+b)\ln(1+s/b)-2s}
 \end{equation}
 \noindent where $s$ and $b$ are the number of signal and background events for a given threshold value. The optimal BDT working point is then given by the maximum $\sigma$-value. Next, we defined a general cut-based approach by the following cuts:
 \begin{itemize}
-    \item $1.0 < m_{K^{+}K^{-}} < 1.04\textnormal{ GeV}$
-    \item $\Delta R(K^{+}, K^{-}) < 0.015$
-    \item $p_{T}(K^{+}K^{-}) > 25\textnormal{ GeV}$
+    \item $1.0 < m_{h^{+}h^{-}} < 1.04\textnormal{ GeV}$
+    \item $\Delta R(h^{+}, h^{-}) < 0.015$
+    \item $p_{T}(h^{+}h^{-}) > 25\textnormal{ GeV}$
     \item $p_{T}(\gamma) > 40\textnormal{ GeV}$
-    \item $I_{rel}(K^{+}K^{-}) < 0.01$
+    \item $I_{rel}(h^{+}h^{-}) < 0.01$
 \end{itemize}
-\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}. Note that the terms BDT ``score," ``threshold," and ``discriminant" will be used interchangeably throughout the remainder of this paper with the understanding that they are the same quantity $D \in [0,1]$.
+\noindent Finally, we calculated the false-positive and true-positive rates of the cut-based methods and plotted them against the BDT's ROC curve. The results of this study are plotted in Fig. \ref{fig:bdt-vs-cuts}. Note that the terms BDT ``score," ``threshold," and ``discriminant" have been and will be used interchangeably throughout the remainder of this paper with the understanding that they are the same quantity $D \in [0,1]$.
 
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-vs-cuts.png}
-\end{center}
-\caption{Left: Expected significance ($\sigma$) versus BDT threshold value. Right: Comparison between an optimal BDT working point and cut-based method plotted on top of the BDT's ROC curve.}
-\label{fig:bdt-vs-cuts}
-\end{figure}
 \end{subsection}
-\begin{subsection}{Optimization for Data}
+\begin{subsection}{Optimization for Data}\label{optim-for-data}
 With the BDT validated, we proceeded to calculated a proper BDT working point for cutting on data. We noticed that the Monte Carlo samples were not properly modeling the data in the signal region of the BDT discriminant (Fig. \ref{fig:bdt-thresh-dist}). Thus, we concluded that we could not sample the BDT testing ROC curve for an effective working point. Instead, we fed the BDT ROC curve data as background in addition to signal Monte Carlo. We then sampled this distribution, calculated expected significance again using Eq. \ref{expsig-eq}, and took the best BDT working point to be at the threshold with maximum expected significance (Fig. \ref{fig:bdt-data-expsig}).
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-threshBySample.png}
+\subfloat      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/bdt-threshBySample.png}
+}\quad
+\subfloat      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/bdt-threshBySample_rho.png}
+}
 \end{center}
-\caption{Stacked BDT discriminant distribution plot by sample.}
+\caption{Stacked BDT discriminant distribution plot by sample. (Left) $H\rightarrow\phi+\gamma$ analysis. (Right) $H\rightarrow\rho+\gamma$ analysis.}
 \label{fig:bdt-thresh-dist}
-\end{figure}
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-data-expsig.png}
-\end{center}
-\caption{Expected significance versus BDT threshold.}
-\label{fig:bdt-data-expsig}
 \end{figure}
 
 \end{subsection}
 \end{section}
 
 \begin{section}{Results}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu eros nisl. Donec sollicitudin nisl nisi, sit amet rutrum nibh faucibus sit amet. In a efficitur dui. Nunc at sagittis urna. Quisque venenatis nec risus quis eleifend. Fusce id nulla in urna tristique iaculis. In et consectetur risus, nec commodo justo. In augue enim, efficitur ac commodo quis, tempus ac arcu. Sed porta dolor ultrices, pellentesque tellus eu, mollis mi. Phasellus et condimentum odio. Curabitur condimentum rhoncus sem, eget sagittis eros rhoncus sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas ac felis aliquam orci eleifend faucibus vitae sit amet mauris. Fusce vel magna mi. Aenean commodo pellentesque tellus, ut iaculis est auctor et.
-Aliquam porttitor justo dolor. Duis ut ex lacinia, vulputate dui a, molestie lorem. Vestibulum elementum lectus vel mollis iaculis. Cras ante purus, pellentesque sit amet sem sed, convallis dapibus est. Aenean vehicula mollis bibendum. Integer aliquet condimentum luctus. Suspendisse vitae rhoncus justo.
-\end{section}
+After cutting on the best BDT working point described in the previous section, we fit the background to an exponential function and the signal to a single Crystal Ball function. Then, we used the HiggsCombine tool's asymptotic limits calculations\cite{cite-hcomb} to generate the plots in Fig. \ref{fig:final-fits} as well as the exclusion limits listed in Fig. \ref{fig:exclude-lims} (at the 95\% confidence level).
+
+\begin{figure}[htb]
+\centering
+\begin{tabular}{ccc}
+\toprule
+Analysis & Expected & Observed \\
+\midrule
+$H\rightarrow\rho+\gamma$ & $(5.2^{+3.0}_{-1.8})\times10^{-3}$ & $4.1\times10^{-3}$ \\
+$H\rightarrow\phi+\gamma$ & $(4.1^{+2.3}_{-1.3})\times10^{-3}$ & $7.0\times10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\caption{Exclusion limits for the two analyses covered by this paper.}
+\label{fig:exclude-lims}
+\end{figure}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-training.png}
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/finalfit_rho.pdf}
+}\quad
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/finalfit_phi.pdf}
+}\\
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/finalfit_rho_bgOnlyFit.pdf}
+}\quad
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/finalfit_phi_bgOnlyFit.pdf}
+}
 \end{center}
-\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied, so they do not completely represent what the BDT saw, however they do provide some insight into the motivation behind the BDT's variable rankings.}
-\label{fig:bdt-training}
+\caption{Final fits for the $H\rightarrow\rho+\gamma$ (left) and $H\rightarrow\phi+\gamma$ (right) analyses.}
+\label{fig:final-fits}
 \end{figure}
+
+\end{section}

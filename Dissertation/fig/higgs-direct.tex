@@ -1,0 +1,59 @@
+% Naming convention:
+%    <above/below : a/b><level: #>_<#cm from origin>
+%    Examples:
+%       a2_0 = above, level 2, at origin
+%       b3_1 = below, level 3, 1cm from origin
+
+\begin{tikzpicture}
+  \begin{feynman}
+    
+    % START: Horizon ---------------------------------
+    \vertex (horizon);
+    \vertex[right=5cm of horizon] (hz_5);
+    \vertex[right=7cm of horizon] (hz_7);
+    % END: Horizon -----------------------------------
+    
+    % START: Above -----------------------------------
+    % Level +2
+    \vertex[above=2cm of horizon] (a2);
+    \vertex[left=1cm of a2] (1_a2) {\(g\)};
+    \vertex[right=2cm of a2] (a2_2);
+    \vertex[right=11cm of a2] (a2_11) {\(u,s\)};
+    % END: Above -------------------------------------
+    
+    % START: Below -----------------------------------
+    % Level -1
+    \vertex[below=1cm of horizon] (b1);
+    \vertex[right=11cm of b1] (b1_11) {\(\overline u,\overline s\)};
+    % Level -2
+    \vertex[below=2cm of horizon] (b2);
+    \vertex[left=1cm of b2] (1_b2) {\(g\)};
+    \vertex[right=2cm of b2] (b2_2);
+    \vertex[right=9cm of b2] (b2_9);
+    % Level -3
+    \vertex[below=3cm of horizon] (b3);
+    \vertex[right=11cm of b3] (b3_11) {\(\gamma\)};    
+
+    \diagram* {
+      {[edges=gluon]
+        (1_a2) -- (a2_2),
+        (1_b2) -- (b2_2),
+      },
+      
+      (a2_2) -- [fermion, edge label=\(t\)] (hz_5),
+      (b2_2) -- [anti fermion, edge label=\(\overline t\)] (hz_5),
+      (a2_2) -- [anti fermion, edge label=\(\overline t\)] (b2_2),
+      
+      (hz_5) -- [scalar, edge label=\(H\)] (hz_7),
+      
+      (hz_7) -- [fermion] (a2_11),
+      (hz_7) -- [anti fermion, edge label=\(\overline u\,\overline s\)] (b2_9),
+      
+      (b2_9) -- [anti fermion] (b1_11),
+      (b2_9) -- [photon] (b3_11),
+    };
+    
+    \draw [decoration={brace}, decorate] (a2_11.north east) -- (b1_11.south east)
+          node [pos=0.5, right] {\(\rho, \phi\)};
+  \end{feynman}
+\end{tikzpicture}
