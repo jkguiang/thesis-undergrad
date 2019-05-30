@@ -1,50 +1,67 @@
 \chapter{Additional Figures}
 
-\begin{section}{Figures for \ref{training}}
-
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=.55\linewidth]{Dissertation/fig/bdt-training.png}
+\includegraphics[width=.7\linewidth]{Dissertation/fig/bdt-training.png}
 \end{center}
-\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied, so they do not completely represent what the BDT saw, however they do provide some insight into the motivation behind the BDT's variable rankings.}
+\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied. ($H\rightarrow\phi\gamma$ analysis.)}
 \label{fig:bdt-training}
 \end{figure}
 
-\end{section}
-
-\begin{section}{Figures for \ref{comp-to-cuts}}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=.7\linewidth]{Dissertation/fig/bdt-training_rho.png}
+\end{center}
+\caption{Preliminary histograms for every feature used to train the BDT. These were drawn before any weights are applied. ($H\rightarrow\rho\gamma$ analysis.)}
+\label{fig:bdt-training_rho}
+\end{figure}
 
 \begin{figure}[htb]
 \begin{center}
+\subfloat      {
 \includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-vs-cuts.png}
+}\\
+\subfloat      {
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-vs-cuts_rho.png}
+}
 \end{center}
-\caption{(Left) Expected significance ($\sigma$) versus BDT threshold value. (Right) Comparison between an optimal BDT working point and cut-based method plotted on top of the BDT's ROC curve.}
+\caption{(Left) Expected significance ($\sigma$) versus BDT threshold value. (Right) Comparison between an optimal BDT working point and cut-based method plotted on top of the BDT's ROC curve. (Top) $H\rightarrow\phi\gamma$. (Bottom) $H\rightarrow\rho\gamma$.}
 \label{fig:bdt-vs-cuts}
 \end{figure}
 
-\end{section}
-
-\begin{section}{Figures for \ref{perf-and-val}}
-
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=.85\linewidth]{Dissertation/fig/bdt-bkgsculpt1.png}
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-performance_rho.png}
 \end{center}
-\caption{Plot of the BDT score versus the reconstructed Higgs mass. A heavy correlation between high score and the true Higgs mass would suggest background is being sculpted.}
-\label{fig:bdt-bkgsculpt1}
+\caption{Left: ROC curve showing BDT testing (blue) and training (orange) performance. Right: Background (blue) and signal (red) distributions versus BDT score for testing (outline) and training (filled). ($H\rightarrow\rho\gamma$ analysis.)}
+\label{fig:bdt-performance_rho}
 \end{figure}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=.85\linewidth]{Dissertation/fig/bdt-bkgsculpt2.png}
+\subfloat      {
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt2.png}
+}\\
+\subfloat      {
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt2_rho.png}
+}
 \end{center}
-\caption{Reconstructed Higgs mass distribution for signal (blue) and background (red) before (filled) and after (outline) requiring $D > 0.9$.}
+\caption{Reconstructed Higgs mass distribution for signal (blue) and background (red) before (filled) and after (outline) requiring $D > 0.9$. (Top) $H\rightarrow\phi\gamma$. (Bottom) $H\rightarrow\rho\gamma$.}
 \label{fig:bdt-bkgsculpt2}
 \end{figure}
 
-\end{section}
-
-\begin{section}{Figures for \ref{optim-for-data}}
+\begin{figure}[htb]
+\begin{center}
+\subfloat      {
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt1.png}
+}\\
+\subfloat      {
+\includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-bkgsculpt1_rho.png}
+}
+\end{center}
+\caption{Plot of the BDT score versus the reconstructed Higgs mass. A heavy correlation between high score and the true Higgs mass would suggest background is being sculpted. (Top) $H\rightarrow\phi\gamma$. (Bottom) $H\rightarrow\rho\gamma$.}
+\label{fig:bdt-bkgsculpt1}
+\end{figure}
 
 \begin{figure}[htb]
 \begin{center}
@@ -58,8 +75,6 @@
 \caption{Expected significance ($\sigma$) versus BDT threshold. (Left) $H\rightarrow\phi+\gamma$ analysis. (Right) $H\rightarrow\rho+\gamma$ analysis.}
 \label{fig:bdt-data-expsig}
 \end{figure}
-
-\end{section}
 
 \chapter{Technical Details}
 \begin{section}{CMS Coordinate System}\label{appendix:cms-coords}

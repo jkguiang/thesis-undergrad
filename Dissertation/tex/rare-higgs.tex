@@ -73,11 +73,32 @@ To start offline analysis, we first apply a baseline selection on data and Monte
 \end{section}
 
 \begin{section}{Backgrounds}\label{backgrounds}
-We are looking for two final-state particles: one photon and one $\rho$ or $\phi$ meson. However, there are a number of processes besides the Higgs decays we are interested in that could present the same signature. In the following paragraphs, I describe how we might get false photons and false mesons that, when combined, present a signal-like signature.
+Our final state particle signature is a single isolated photon, lepton, and a reconstructed $\rho$ or $\phi$ candidate. However, there are a number of processes besides the Higgs decays we are interested in that could present the same signature to the detector.
 
-We may get a real, prompt photon in W events where a photon was radiated by one of the initial-state quarks (Fig. \ref{fig:whiggs-prod}). We might also get a fake photon from misidentified jets in W events. Finally, from Z events, we can get fake photons from misidentified electrons.
+First, We may get a real, prompt photon in W events where a photon was radiated by one of the initial-state quarks (Fig. \ref{fig:whiggs-prod}). We might also get a fake photon from misidentified jets in W events. Finally, from Z events, we can get fake photons from misidentified electrons.
 
-Fake mesons may be produced by any two tracks that happen to both be isolated from all particles other than each other and have a combined invariant mass that lands in the $\rho$ or $\phi$-meson Breit-Wigner lineshapes.
+At the same time, fake mesons may be produced by any two tracks that happen to both be isolated from all particles other than each other and have a combined invariant mass that lands in the $\rho$ or $\phi$ meson Breit-Wigner lineshapes.
+
+Now, these background signatures are superficially identical to signal, but they are fundamentally different. For the fake and real photons from $W$ events, we see that the $\Delta R$ between the reconstructed meson and photon (Fig. \ref{fig:bkgs}(a)) is consistently close to $\pi$, meaning they are often back-to-back. For signal, we see that the distribution is more varied. We would expect background to look different here, because there is a photon recoiling against some jet that is being identified as a meson candidate. For the fake photons from misidentified electrons from $Z$ events, we see that the invariant mass of the lepton-photon system (Fig. \ref{fig:bkgs}(b)) peaks at the $Z$ mass (approximately 90 GeV) for the Drell Yan sample, which we expect because it models a quark-antiquark pair annihilating to form a $Z$ boson that then decays to leptons. For the other backgrounds and signal, this is obviously not the case, so no obvious peak is evident. Finally, fake mesons can be differentiated in two different ways. First, the $\Delta R$ between the two hadrons (Fig. \ref{fig:bkgs}(c)) is particularly discriminatory in the $\phi$ analysis, since the kaons from real signal will have large, practically parallel momenta. Last, the invariant mass of the hadron pair (Fig. \ref{fig:bkgs}(d)) will be close to the true meson mass for signal -- again this is particularly true for $\phi$ due to its narrow mass distribution -- whereas background is a more flat distribution with a small peak in the bulk of the true meson mass from real mesons (not from the signal we are interested in). For the analysis, then, we may make cuts on all of the aforementioned quantities to distinguish signal from background. Where exactly we make these cuts is another question, which address through a machine learning approach discussed in the following section.
+
+\begin{figure}[htb]
+\begin{center}
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/recoPhiGamma_dR.pdf}
+}\quad
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/recoZ_mass.pdf}
+}\\
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/recoKpKm_dR.pdf}
+}\quad
+\subfloat[]      {
+\includegraphics[width=.45\linewidth]{Dissertation/fig/recoPhi_mass.pdf}
+}
+\end{center}
+\caption{Discriminatory quantities for differentiating between signal (red) and background (stacked), where background is scaled to data (black) and signal is scaled to background.}
+\label{fig:bkgs}
+\end{figure}
 \end{section}
 
 \begin{section}{Boosted Decision Tree}
@@ -116,7 +137,7 @@ We selected the XGBoost python package, a well-known implementation of gradient-
     \end{itemize}
 \end{enumerate}
 
-\noindent Now, there are some important clarifications to make here. First, we scaled all $p_{T}$ quantities that are correlated to the Higgs and input into the BDT by the Higgs mass. Second, $\varphi$ refers to the azimuthal angle (see Fig. \ref{fig:cms-coords}) which is not to be confused with the $\phi$-meson. Finally, we calculated the quantities listed under (iv.) using MELA\cite{cite-mela} (all angles used are illustrated in Fig. \ref{fig:magic-angles}).
+\noindent Now, there are some important clarifications to make here. First, we scaled all $p_{T}$ quantities that are correlated to the Higgs and input into the BDT by the Higgs mass. Second, $\varphi$ refers to the azimuthal angle (see Fig. \ref{fig:cms-coords}) which is not to be confused with the $\phi$ meson. Finally, we calculated the quantities listed under (iv.) using MELA\cite{cite-mela} (all angles used are illustrated in Fig. \ref{fig:magic-angles}).
 
 \begin{figure}[htb]
 \begin{center}
@@ -144,11 +165,16 @@ With these features properly defined, we ran the BDT for 200 training rounds wit
 
 \end{subsection}
 \begin{subsection}{Performance and Validation}\label{perf-and-val}
-We determined satisfactory performance by evaluating the BDT's ROC curves for testing and training (Fig. \ref{fig:bdt-performance}) as well as the sanity of the BDT's feature rankings (Fig. \ref{fig:bdt-vars}). We also checked for background sculpting by two methods. First, we looked at the plot of the BDT scores versus the reconstructed Higgs mass (Fig. \ref{fig:bdt-bkgsculpt1}). A correlation between high BDT scores and the known Higgs mass (125 GeV) would indicate that the BDT was simply learning and cutting on the reconstructed Higgs mass and thus sculpting the background. Second, we directly evaluated the background and signal distributions before and after making a tight cut ($D > 0.9$) on the BDT discriminant, where an artificial peak of the background inside of the signal region would directly show that the BDT was sculpting the background. We required that the BDT pass these two tests before proceeding to use it in the rest of the analysis.
+We determined satisfactory performance by evaluating the BDT's ROC curves for testing and training (Fig. \ref{fig:bdt-performance} for the $\phi$ analysis and Fig. \ref{fig:bdt-performance_rho} for the $\rho$ analysis) as well as the sanity of the BDT's feature rankings (Fig. \ref{fig:bdt-vars}). We also checked for background sculpting by two methods. First, we looked at the plot of the BDT scores versus the reconstructed Higgs mass (Fig. \ref{fig:bdt-bkgsculpt1}). A correlation between high BDT scores and the known Higgs mass (125 GeV) would indicate that the BDT was simply learning and cutting on the reconstructed Higgs mass and thus sculpting the background. Second, we directly evaluated the background and signal distributions before and after making a tight cut ($D > 0.9$) on the BDT discriminant (Fig. \ref{fig:bdt-bkgsculpt2}), where an artificial peak of the background inside of the signal region would directly show that the BDT was sculpting the background. We required that the BDT pass these two tests before proceeding to use it in the rest of the analysis.
 
 \begin{figure}[htb]
 \begin{center}
-\input{Dissertation/fig/bdt-vars.tex}
+\subfloat      {
+\scalebox{.75}[0.75]{\input{Dissertation/fig/bdt-vars_phi.tex}}
+}\quad
+\subfloat      {
+\scalebox{.75}[0.75]{\input{Dissertation/fig/bdt-vars_rho.tex}}
+}
 \end{center}
 \caption{Top ten variables as ranked by the BDT by gain. All input variables are reconstruction-level Monte Carlo data, and all $p_{T}$ variables are scaled by $m_{h^{+}h^{-}\gamma}.$}
 \label{fig:bdt-vars}
@@ -158,7 +184,7 @@ We determined satisfactory performance by evaluating the BDT's ROC curves for te
 \begin{center}
 \includegraphics[width=.95\linewidth]{Dissertation/fig/bdt-performance.png}
 \end{center}
-\caption{Left: ROC curve showing BDT testing (blue) and training (orange) performance. Right: Background (blue) and signal (red) distributions versus BDT score for testing (outline) and training (filled).}
+\caption{Left: ROC curve showing BDT testing (blue) and training (orange) performance. Right: Background (blue) and signal (red) distributions versus BDT score for testing (outline) and training (filled). ($H\rightarrow\phi\gamma$ analysis.)}
 \label{fig:bdt-performance}
 \end{figure}
 
@@ -199,7 +225,7 @@ With the BDT validated, we proceeded to calculated a proper BDT working point fo
 \end{section}
 
 \begin{section}{Results}
-After cutting on the best BDT working point described in the previous section, we fit the background to an exponential function and the signal to a single Crystal Ball function. Then, we used the HiggsCombine tool's asymptotic limits calculations\cite{cite-hcomb} to generate the plots in Fig. \ref{fig:final-fits} as well as the exclusion limits listed in Fig. \ref{fig:exclude-lims} (at the 95\% confidence level). We see that our result is within one order of magnitude of that produced by ATLAS in a study\cite{cite-rpg-brs} of these same decays, but through gluon-gluon fusion using a dedicated trigger. However, a weaker result was expected. Although we had approximately four times the amount of data from the full Run II 137 fb\textsuperscript{-1} dataset, the much smaller cross-section of the associated $WH$ production compared to gluon-gluon fusion already results in a reduction in cross-section by a factor of about 32. On top of that, the branching ratio for $W\rightarrow e^{\pm}/\mu^{\pm}\nu_{e,\mu}$ is approximately 22\%, which reduces the effective $WH$ cross-section and results in an overall reduction in cross-section by a factor of 146.
+After cutting on the best BDT working point described in the previous section, we fit the background to an exponential function and the signal to a single Crystal Ball function. Then, we used the HiggsCombine tool's asymptotic limits calculations\cite{cite-hcomb} to generate the plots in Fig. \ref{fig:final-fits} as well as the exclusion limits listed in Fig. \ref{fig:exclude-lims} (at the 95\% confidence level). We see that our result is within one order of magnitude of that produced by ATLAS in a study\cite{cite-rpg-brs} of these same decays, but through gluon-gluon fusion using a dedicated trigger. However, a weaker result was expected. Although we had approximately four times the amount of data from the full Run II 137 fb\textsuperscript{-1} dataset, the much smaller cross-section of the associated $WH$ production compared to gluon-gluon fusion already results in a reduction in cross-section by a factor of about 32. On top of that, the branching ratio for $W\rightarrow e^{\pm}/\mu^{\pm}\nu_{e,\mu}$ is approximately 22\%, reducing the effective $WH$ cross-section, which gives an overall reduction in cross-section by a factor of 146.
 
 \begin{figure}[htb]
 \centering
