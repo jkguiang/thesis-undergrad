@@ -2,11 +2,11 @@
 %  Search for Rare Higgs Decays
 %
 
-I begin with a brief discussion of the motivation behind looking for rare Higgs decays like $H \rightarrow \rho+\gamma$ and $H \rightarrow \phi+\gamma$, specifically via the associated $WH$ rather than direct production. Then, I outline the event selection methods and relevant backgrounds. Finally, I describe the Boosted Decision tree we used in detail, followed by the results of the analysis.
+I begin with a brief discussion of the motivation behind looking for rare Higgs decays like $H \rightarrow \rho\gamma$ and $H \rightarrow \phi\gamma$, specifically via the associated $WH$ rather than direct production. Then, I outline the event selection methods and relevant backgrounds. Finally, I describe the Boosted Decision tree we used in detail, followed by the results of the analysis.
 
 \begin{section}{Motivation}\label{motivation}
 
-The branching ratios for the $H \rightarrow \phi+\gamma$ and $H \rightarrow \rho+\gamma$ decays are expected to have a lower bound of $8.8 \times 10^{-4}$ and $4.8 \times 10^{-4}$  respectively\cite{cite-rpg-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at current, human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
+The Standard Model branching ratios for the $H\rightarrow\phi\gamma$ and $H\rightarrow\rho\gamma$ decays are expected to be $2.31\times10^{-6}$ and $1.68\times10^{-5}$  respectively\cite{cite-sm-brs}. Put simply, they are \textit{very} rare - so rare, in fact, that they have never been directly observed. Furthermore, by any measure, these decays should never be detectable at current, human-reachable energies, that is, unless there are yet-undiscovered processes that enhance the rate of either of these decays. This implies that this measurement is experimentally exciting, because any significant measurement of the production of $\rho$ or $\phi$ mesons would be direct evidence of the existence of new physics. At the same time, if no $\rho$ or $\phi$ mesons are found, then the branching ratio of either decay mode can be pushed farther back, depending on the detector's sensitivity to the signature.
 
 Now, ideally, we would search for these decays via \textit{direct} production, that is, when a Higgs boson is produced by gluon-gluon fusion (Fig. \ref{fig:direct-prod}), then decays to a photon and a $\phi$ or $\rho$ meson. However, CMS does not have a dedicated trigger for detecting pions or kaons (the final-state products of the $\phi$ and $\rho$ mesons respectively), so the only possibly detectable particle would be the photon. However, since the Higgs mass is 125 GeV, the photon and meson both have a momentum of approximately 60 GeV at most, so the photon is well below the threshold of the CMS single photon trigger\cite{cite-hlt}. Therefore, we chose an associated production mode, namely, $W^{\pm}+H$ (Fig. \ref{fig:whiggs-prod}), where $W \rightarrow \ell^{\pm}+\nu_{\ell}$. We can easily trigger on the leptons produced by the $W$ boson, and the Higgs comes for free. At the same time, we lose a \textit{lot} of signal, since this process is far more rare. We also have to deal with more background, since we are including more particles in the signature we are searching for. Ultimately these consequences consolidate into an overall loss of sensitivity, but alternative associated productions ($Z+H$, for instance) face similar challenges.
 
@@ -19,7 +19,7 @@ Now, ideally, we would search for these decays via \textit{direct} production, t
 \scalebox{.45}[0.45]{\input{Dissertation/fig/higgs-qloop.tex}}
 }
 \end{center}
-\caption{Feynman diagram\cite{cite-tikz-feynman} for primary mechanism of the direct production of the Higgs boson at the LHC where $H \rightarrow \rho+\gamma$ or $H \rightarrow \phi+\gamma$.}
+\caption{Feynman diagram\cite{cite-tikz-feynman} for primary mechanism of the direct production of the Higgs boson at the LHC where $H \rightarrow \rho\gamma$ or $H \rightarrow \phi\gamma$.}
 \label{fig:direct-prod}
 \end{figure}
 
@@ -45,31 +45,30 @@ The analysis begins with data based on a sample of proton-proton collisions coll
 \begin{subsection}{Baseline Selection}\label{baseline-selection}
 To start offline analysis, we first apply a baseline selection on data and Monte Carlo samples to filter out particularly irrelevant events. First, we require at one ``good" lepton, qualified as:
 \begin{itemize}
-    \item $p_{T}(\ell^{\pm}) > 10\textnormal{ GeV}$
-    \item $\eta(\ell^{\pm}) < 2.4$
-    \item $ID(e^{\pm})$ \verb|HAD_medium_noiso_v5|
-    \item $ID(\mu^{\pm})$ \verb|isMediumMuonPOG|
-    \item $I_{rel}(e^{\pm}) < 0.1$ using \verb|elMiniRelIsoCMS3_EA|
-    \item $I_{rel}(\mu^{\pm}) < 0.2$ using \verb|muMiniRelIsoCMS3_EA|
+    \item $p_{T}(\ell^{\pm}) > 35\textnormal{ GeV}$
+    \item $|\eta(\ell^{\pm})| < 2.4$
+    \item $ID(\ell^{\pm}) =$ \verb|Medium POG ID|
+    \item $I_{mini}(e^{\pm}) < 0.1$
+    \item $I_{mini}(\mu^{\pm}) < 0.2$
 \end{itemize}
 
 \noindent We also require one good photon, qualified as:
 \begin{itemize}
-    \item $p_{T}(\gamma) > 20\textnormal{ GeV}$
-    \item $\eta(\gamma) < 2.5$
-    \item $ID(\gamma)$ \verb|isMediumPhotonPOG_Fall17V2|
+    \item $p_{T}(\gamma) > 30\textnormal{ GeV}$
+    \item $|\eta(\gamma)| < 2.5$
+    \item $ID(\gamma)$ = \verb|Medium POG ID|
     \item $I_{rel}(\gamma) < 0.06$
-    \item $\Delta R(\gamma, e^{\pm}) < 0.2$
+    \item $\Delta R(\gamma, \textnormal{any } e^{\pm}) > 0.2$
 \end{itemize}
 \noindent where if two or more good $\ell$ or $\gamma$ candidates are found, the candidate with the highest $p_{T}$ is selected. Finally, we require two, oppositely charged hadrons. This is complicated by the fact that CMS does not distinguish pions and kaons in reconstruction, but we begin by requiring one good hadron ($h$) candidate pair ($h^{+}, h^{-}$), which are assumed to be the daughters of some unindentified mother meson ($M$), qualified as:
 \begin{itemize}
-    \item $p_{T}(h^{\pm}) > 10\textnormal{ GeV}$
+    \item $p_{T}(h^{\pm}) > 35\textnormal{ GeV}$
     \item $\eta(h^{\pm}) < 2.4$
-    \item $h^{+}, h^{-}$ from the same primary vertex
+    \item $h^{+}, h^{-}$ from primary vertex
     \item $I_{rel}(M) < 0.06$
     \item $\Delta R(h^{+}, h^{-}) < 0.1$
 \end{itemize}
-\noindent where $I_{rel}(M) = \frac{max(I(h^{+}), I(h^{-}))}{p_{T}(M)}$. Now, as mentioned previously, the the exact identity of these hadrons is ambiguous. They are saved, by default, as pions, so their four-momenta are all constructed using the pion's mass contribution to the energy component. We add these to form the $\rho$-candidate four-momentum and designate it as the ``pion hypothesis." Then, we manually set the energy-components of the hadron four-momenta using the kaon mass, add them to form the $\phi$-candidate four-momentum, and designate it as the ``kaon hypothesis." If two or more of either hypothesis is found, we select the hypothesis that is closest to the true, respective mass. This leads to the possibility of biasing the data, but we avoid this later by rejecting any events that had more than one meson candidate.
+\noindent where $I_{rel}(M) = \frac{max(I(h^{+}), I(h^{-}))}{p_{T}(M)}$. Now, as mentioned previously, the the exact identity of these hadrons is ambiguous. They are saved, by default, as pions, so their four-momenta are all constructed using the pion's mass contribution to the energy component. We add these to form the $\rho$-candidate four-momentum and designate it as the ``pion hypothesis." Then, we manually set the energy-components of the hadron four-momenta using the kaon mass, add them to form the $\phi$-candidate four-momentum, and designate it as the ``kaon hypothesis." If two or more of either hypothesis is found, we select the hypothesis that is closest to the true, respective mass. This leads to the possibility of biasing the data, but we avoid this later by rejecting any events that had more than one meson candidate. Finally, for 2018 data and MC, we exclude any events with $e, \gamma$ in the HEM region, where a portion of the Hadronic Calorimeter was malfunctioning for a particular period of time.
 \end{subsection}
 \end{section}
 
@@ -192,7 +191,7 @@ With the BDT validated, we proceeded to calculated a proper BDT working point fo
 \includegraphics[width=.45\linewidth]{Dissertation/fig/bdt-threshBySample_rho.png}
 }
 \end{center}
-\caption{Stacked BDT discriminant distribution plot by sample. (Left) $H\rightarrow\phi+\gamma$ analysis. (Right) $H\rightarrow\rho+\gamma$ analysis.}
+\caption{Stacked BDT discriminant distribution plot by sample. (Left) $H\rightarrow\phi\gamma$ analysis. (Right) $H\rightarrow\rho\gamma$ analysis.}
 \label{fig:bdt-thresh-dist}
 \end{figure}
 
@@ -200,16 +199,16 @@ With the BDT validated, we proceeded to calculated a proper BDT working point fo
 \end{section}
 
 \begin{section}{Results}
-After cutting on the best BDT working point described in the previous section, we fit the background to an exponential function and the signal to a single Crystal Ball function. Then, we used the HiggsCombine tool's asymptotic limits calculations\cite{cite-hcomb} to generate the plots in Fig. \ref{fig:final-fits} as well as the exclusion limits listed in Fig. \ref{fig:exclude-lims} (at the 95\% confidence level).
+After cutting on the best BDT working point described in the previous section, we fit the background to an exponential function and the signal to a single Crystal Ball function. Then, we used the HiggsCombine tool's asymptotic limits calculations\cite{cite-hcomb} to generate the plots in Fig. \ref{fig:final-fits} as well as the exclusion limits listed in Fig. \ref{fig:exclude-lims} (at the 95\% confidence level). We see that our result is within one order of magnitude of that produced by ATLAS in a study\cite{cite-rpg-brs} of these same decays, but through gluon-gluon fusion using a dedicated trigger. However, a weaker result was expected. Although we had approximately four times the amount of data from the full Run II 137 fb\textsuperscript{-1} dataset, the much smaller cross-section of the associated $WH$ production compared to gluon-gluon fusion already results in a reduction in cross-section by a factor of about 32. On top of that, the branching ratio for $W\rightarrow e^{\pm}/\mu^{\pm}\nu_{e,\mu}$ is approximately 22\%, which reduces the effective $WH$ cross-section and results in an overall reduction in cross-section by a factor of 146.
 
 \begin{figure}[htb]
 \centering
 \begin{tabular}{ccc}
 \toprule
-Analysis & Expected & Observed \\
+Branching Ratio & Expected & Observed \\
 \midrule
-$H\rightarrow\rho+\gamma$ & $(5.2^{+3.0}_{-1.8})\times10^{-3}$ & $4.1\times10^{-3}$ \\
-$H\rightarrow\phi+\gamma$ & $(4.1^{+2.3}_{-1.3})\times10^{-3}$ & $7.0\times10^{-3}$ \\
+$\mathcal{B}(H\rightarrow\phi\gamma)$ & $(5.2^{+3.0}_{-1.8})\times10^{-3}$ & $4.1\times10^{-3}$ \\
+$\mathcal{B}(H\rightarrow\rho\gamma)$ & $(4.1^{+2.3}_{-1.3})\times10^{-3}$ & $7.0\times10^{-3}$ \\
 \bottomrule
 \end{tabular}
 \caption{Exclusion limits for the two analyses covered by this paper.}
@@ -231,7 +230,7 @@ $H\rightarrow\phi+\gamma$ & $(4.1^{+2.3}_{-1.3})\times10^{-3}$ & $7.0\times10^{-
 \includegraphics[width=.45\linewidth]{Dissertation/fig/finalfit_phi_bgOnlyFit.pdf}
 }
 \end{center}
-\caption{Final fits for the $H\rightarrow\rho+\gamma$ (left) and $H\rightarrow\phi+\gamma$ (right) analyses.}
+\caption{Final fits for the $H\rightarrow\rho\gamma$ (left) and $H\rightarrow\phi\gamma$ (right) analyses.}
 \label{fig:final-fits}
 \end{figure}
 
