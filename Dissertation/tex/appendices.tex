@@ -97,14 +97,18 @@ In the CMS Coordinate system, the $z$-axis is aligned along the beampipe, theref
 
 \end{section}
 
-\begin{section}{Kinematic Variable Definitions}
-The following quantities are defined using the CMS Coordinate System defined in Appendix A.1. First, it is useful to define ``transverse" components (denoted as $A_{T}$ for a three or four-vector quantity A) to be the spatial $x$ and $y$-components of a given variable. Additionally, $\Delta R$ between two particles $x_1, x_2$ is defined as
+\begin{section}{Kinematic Variable Definitions}\label{var-defs}
+The following quantities are defined using the CMS Coordinate System defined in Appendix \ref{appendix:cms-coords}. First, it is useful to define ``transverse" components (denoted as $A_{T}$ for a three or four-vector quantity A) to be the spatial $x$ and $y$-components of a given variable. Additionally, $\Delta R$ between two particles $x_1, x_2$ is defined as
 \begin{equation}
     \Delta R(x_1, x_2) = \sqrt{\Delta\varphi(x_1, x_2)^{2}+\Delta\eta(x_1, x_2)^{2}}
 \end{equation}
-\noindent where $\Delta\eta(x_1, x_2) = \eta(x_2)-\eta(x_1)$, and $\Delta\varphi(x_1, x_2) = |\varphi(x_2) - \varphi(x_1)|$ is the \textit{inner} angle between the $x_1$ and $x_2$ three-momenta), such that $\Delta\varphi \in [0, 2\pi]$. Then, the isolation $I$ of a particle $x$ is defined as the sum of transverse momentum $p_{T}$ in a cone of $\Delta R < 0.4$\cite{cite-iso-dR} around that particle. Finally, the ``relative" isolation $I_{rel}$ of a particle $x$ is defined as:
+\noindent where $\Delta\eta(x_1, x_2) = \eta(x_2)-\eta(x_1)$, and $\Delta\varphi(x_1, x_2) = |\varphi(x_2) - \varphi(x_1)|$ is the \textit{inner} angle between the $x_1$ and $x_2$ three-momenta), such that $\Delta\varphi \in [0, 2\pi]$. Then, the isolation $I$ of a particle $x$ is defined as the sum of transverse momentum $p_{T}$ in a cone of $\Delta R < 0.4$\cite{cite-iso-dR} around that particle. Finally, the ``relative" isolation $I_{rel}$ of a particle $x$ defined as:
 \begin{equation}
     I_{rel}(x) = \frac{I(x)}{p_{T}(x)}
+\end{equation}
+However, for leptons, ``mini" relative isolation $I_{mini}$ is used instead, where the $p_{T}$ of surrounding particles is summed in a variable cone of $\Delta R < \Delta R_{mini}$ with $\Delta R_{mini}$ is defined as:
+\begin{equation}
+    \Delta R_{mini} = \textnormal{min}(0.2, \textnormal{max}(10\textnormal{ GeV}/p_{T}^{lep}, 0.05))
 \end{equation}
 \end{section}
 
