@@ -2,6 +2,8 @@
 %  MTD Simulation
 %
 
+I begin with a description of the motivation behind the proposal of the Minimum Ionizing Particle (MIP) Timing Detector. Then, I describe the process of rendering one of the proposed designs for the detector's endcap timing layer. Finally, I discuss the mathematics behind the simulation and show some of the resultant plots used during the detector's technical design process.
+
 \begin{section}{Motivation}
 
 The HL-LHC upgrade will offer unprecedented luminosity in which one may find new physics, but it brings with it new complications that must be addressed by upgraded or additional detector hardware. Foremost among the new challenges posed by the HL-LHC is that higher luminosity means many more particles, which provides a far more complex picture to reconstruct for analysis. One such complexity is the increase in collision points, which is a key component of both offline and online reconstruction. With more particles colliding, collision points start to ``pile up'' on top of each other in space (this phenomena is aptly referred to as \textit{pileup}). Consequently, when reconstructing collisions into discrete ``events,'' one for each proton-proton collision, the reconstruction algorithm is unable to discern between one collision and many others that occurred in the same point in space. However, these collisions occur at different \textit{times}, so adding timing information should certainly help reduce pileup. In fact, this has been studied and proven to be the case in simulations (Fig. \ref{fig:pileup-reduce}). To this end, it has been proposed that a layer of silicon-based sensors called the MIP Timing Detector (MTD), with sufficient timing resolutions, be placed around the perimeter -- surrounding the barrel and covering the endcap -- of the CMS detector, but the design and approval of such an upgrade is no simple task. From its conceptual inception to the finalization of its technical design, questions continually arise, so clear, cogent answers are constantly required, but since the detector has yet to be built, computer simulations are necessary to address these important concerns regarding the design and projected performance of the MTD.
@@ -15,7 +17,7 @@ The HL-LHC upgrade will offer unprecedented luminosity in which one may find new
 \includegraphics[width=.45\linewidth]{Dissertation/fig/pileup-reduce2.pdf}
 }
 \end{center}
-\caption{Plots from the TDR\cite{cite-mtd-tdr} demonstrating pileup reduction from timing information. Left: Number of pileup tracks incorrectly associated with the hard interaction vertex as a function of the collision line density for different time resolutions. Right: Distribution of the number of incorrectly associated tracks with the use of a $3\sigma$ (where $\sigma = 35$ ps) selection on timing information and without use of timing information; the vertical axis is the fraction of primary vertices which have the number of pileup tracks shown on the horizontal axis
+\caption{Plots from the TDR\cite{cite-mtd-tdr} demonstrating pileup reduction from timing information. (Left) Number of pileup tracks incorrectly associated with the hard interaction vertex as a function of the collision line density for different time resolutions. (Right) Distribution of the number of incorrectly associated tracks with the use of a $3\sigma$ (where $\sigma = 35$ ps) selection on timing information and without use of timing information; the vertical axis is the fraction of primary vertices which have the number of pileup tracks shown on the horizontal axis
 associated to them.}
 \label{fig:pileup-reduce}
 \end{figure}
@@ -115,16 +117,16 @@ The STL representation of the MTD and a text file containing the kinematics of m
 \begin{figure}[htb]
 \begin{center}
 \subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/DiskEtaEff01-1190mm.png}
+\includegraphics[width=.45\linewidth]{Dissertation/fig/DiskEtaEff01-1190mm.png}
 }\quad
 \subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/DiskEtaPtEff01-1190mm.png}
+\includegraphics[width=.45\linewidth]{Dissertation/fig/DiskEtaPtEff01-1190mm.png}
 }\\
 \subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/LayerHitEff01-1190mm.png}
+\includegraphics[width=.45\linewidth]{Dissertation/fig/LayerHitEff01-1190mm.png}
 }\quad
 \subfloat[]      {
-\includegraphics[width=.25\linewidth]{Dissertation/fig/LayerHits01-1190mm.png}
+\includegraphics[width=.45\linewidth]{Dissertation/fig/LayerHits01-1190mm.png}
 }
 \end{center}
 \caption{Efficiency plots produced using simulation data for the ETL with a 1190mm outer radius and 315mm inner radius following the Topolino design.}
